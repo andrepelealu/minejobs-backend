@@ -17,9 +17,11 @@ use Illuminate\Http\Request;
 Route::get('/', 'IndexController@index');
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
-Route::get('book', 'BookController@book');
 Route::post('datapribadi-candidate/{id}', 'ControllerPostCandidate@dataPribadi');
 Route::post('preferensi-candidate/{id}', 'ControllerPostCandidate@preferensiPekerjaan');
+Route::post('pengalaman/{id}', 'ControllerPostCandidate@Pengalaman');
+Route::post('pendidikan/{id}', 'ControllerPostCandidate@Pendidikan');
+
 
 Route::get('/sortby', 'ControllerPostCandidate@sortBy');
 

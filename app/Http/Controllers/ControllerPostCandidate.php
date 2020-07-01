@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\DataPribadi;
 use App\PreferensiPekerjaan;
+use App\Pengalaman;
+use App\Pendidikan;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -92,6 +94,72 @@ class ControllerPostCandidate extends Controller
         $res['data'] = $input;
         return response()->json($res, 200);
     }
+    public function Pengalaman(request $req, $idUser) {
 
+        $validator = Validator::make($req->all(), [
+            'posisi' => 'required|string|max:255',
+            'nama_perusahaan' => 'required|string|max:255',
+            'id_user' => 'required|unique:data_pribadis,id_user,$idUser',
+            'tahun_mulai' =>'required|date',
+            'tahun_selesai' =>'required|date',
+            'jabatan'=>'required',
+            'gaji'=>'required',
+            'deskripsi_pekerjaan'=>'required|string'
+        ]
+    );
 
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $input                      = new Pengalaman;
+        $input->id_user             = $idUser;
+        $input->posisi              = $req->posisi;
+        $input->nama_perusahaan     = $req->nama_perusahaan;
+        $input->tahun_mulai         = $req->tahun_mulai;
+        $input->tahun_selesai       = $req->tahun_selesai;
+        $input->jabatan             = $req->jabatan;
+        $input->gaji                = $req->gaji;
+        $input->deskripsi_pekerjaan = $req->deskripsi_pekerjaan;
+        
+        //save into DB
+        $input->save();
+
+        $res['message'] = 'berhasil post';
+        $res['data'] = $input;
+        return response()->json($res, 200);
+    }
+
+    public function Pendidikan(request $req, $idUser) {
+
+        $validator = Validator::make($req->all(), [
+            'jenjang_pendidikan' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+            'id_user' => 'required|unique:data_pribadis,id_user,$idUser',
+            'tahun_mulai' =>'required|date',
+            'tahun_selesai' =>'required|date',
+            'nama_instansi'=>'required',
+            
+        ]
+    );
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $input                      = new Pendidikan;
+        $input->id_user             = $idUser;
+        $input->jenjang_pendidikan  = $req->jenjang_pendidikan;
+        $input->jurusan             = $req->jurusan;
+        $input->tahun_mulai         = $req->tahun_mulai;
+        $input->tahun_selesai       = $req->tahun_selesai;
+        $input->nama_instansi       = $req->nama_instansi;
+        
+        //save into DB
+        $input->save();
+
+        $res['message'] = 'berhasil post';
+        $res['data'] = $input;
+        return response()->json($res, 200);
+    }
 }
