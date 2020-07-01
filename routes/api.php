@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::get('/', 'IndexController@index');
+Route::post('register', 'UserController@register');
+Route::post('login', 'UserController@login');
+Route::get('book', 'BookController@book');
+Route::post('datapribadi-candidate/{id}', 'ControllerPostCandidate@dataPribadi');
+Route::post('preferensi-candidate/{id}', 'ControllerPostCandidate@preferensiPekerjaan');
+
+Route::get('/sortby', 'ControllerPostCandidate@sortBy');
+
+Route::group(['middleware' => 'jwt.verify'], function(){
+    Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::post('logout', 'UserController@logout');
 });
