@@ -8,6 +8,10 @@ use App\DataPribadi;
 use App\PreferensiPekerjaan;
 use App\Pengalaman;
 use App\Pendidikan;
+use App\Keahlian;
+use App\Bahasa;
+use App\Resume;
+
 
 use Illuminate\Support\Facades\Validator;
 
@@ -162,4 +166,83 @@ class ControllerPostCandidate extends Controller
         $res['data'] = $input;
         return response()->json($res, 200);
     }
+    public function Keahlian(request $req, $idUser) {
+
+        $validator = Validator::make($req->all(), [
+            'nama_keahlian' => 'required|string|',
+            'tingkatan' => 'required|string|max:100|',
+            
+     
+        ]
+    );
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $input                  = new Keahlian;
+        $input->id_user         = $idUser;
+        $input->nama_keahlian   = $req->nama_keahlian;
+        $input->tingkatan       = $req->tingkatan;
+        
+       
+        //save into DB
+        $input->save();
+
+        $res['message'] = 'berhasil post';
+        $res['data'] = $input;
+        return response()->json($res, 200);
+    }
+    public function Bahasa(request $req, $idUser) {
+
+        $validator = Validator::make($req->all(), [
+            'jenis_bahasa' => 'required|string|',
+            'kemampuan_verbal' => 'required|string|max:100|',
+            'kemampuan_tulisan' => 'required|string|'
+     
+        ]
+    );
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $input                      = new Bahasa;
+        $input->id_user             = $idUser;
+        $input->jenis_bahasa        = $req->jenis_bahasa;
+        $input->kemampuan_verbal    = $req->kemampuan_verbal;
+        $input->kemampuan_tulisan   = $req->kemampuan_tulisan;
+       
+        //save into DB
+        $input->save();
+
+        $res['message'] = 'berhasil post';
+        $res['data'] = $input;
+        return response()->json($res, 200);
+    }
+    public function Resume(request $req, $idUser) {
+
+        $validator = Validator::make($req->all(), [
+            'upload_resume' => 'required|string|',
+     
+        ]
+    );
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $input                      = new Resume;
+        $input->id_user             = $idUser;
+        $input->upload_resume       = $req->upload_resume;
+       
+        //save into DB
+        $input->save();
+
+        $res['message'] = 'berhasil post';
+        $res['data'] = $input;
+        return response()->json($res, 200);
+    }
+
+
 }
