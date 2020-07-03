@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateUploadCvTable extends Migration {
+class CreateUserAdminTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,12 @@ class CreateUploadCvTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('upload_cv', function(Blueprint $table)
+		Schema::create('user_admin', function(Blueprint $table)
 		{
-			$table->increments('id_cv');
-			$table->integer('id_kandidat')->index('upload_cv_fk0');
-			$table->string('url_cv');
+			$table->integer('id_admin')->primary();
+			$table->string('email');
+			$table->binary('password', 1);
+			$table->timestamps();
 		});
 	}
 
@@ -28,7 +29,7 @@ class CreateUploadCvTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('upload_cv');
+		Schema::drop('user_admin');
 	}
 
 }

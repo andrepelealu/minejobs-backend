@@ -14,7 +14,7 @@ class CreatePreferensiPekerjaanTable extends Migration {
 	{
 		Schema::create('preferensi_pekerjaan', function(Blueprint $table)
 		{
-			$table->increments('id_preferensi_pekerjaan');
+			$table->integer('id_preferensi_pekerjaan', true);
 			$table->integer('id_kandidat')->index('preferensi_pekerjaan_fk0');
 			$table->integer('gaji_diharapkan');
 			$table->string('provinsi');

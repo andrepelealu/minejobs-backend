@@ -14,12 +14,12 @@ class CreatePendidikanTable extends Migration {
 	{
 		Schema::create('pendidikan', function(Blueprint $table)
 		{
-			$table->increments('id_pendidikan');
+			$table->integer('id_pendidikan', true);
 			$table->integer('id_kandidat')->index('pendidikan_fk0');
 			$table->string('jenjang_pendidikan');
 			$table->string('jurusan');
-			$table->integer('tahun_mulai');
-			$table->integer('tahun_selesai');
+			$table->string('tahun_mulai');
+			$table->string('tahun_selesai');
 			$table->string('nama_instansi');
 		});
 	}

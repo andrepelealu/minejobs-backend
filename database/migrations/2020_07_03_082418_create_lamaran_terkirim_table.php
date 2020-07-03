@@ -14,7 +14,7 @@ class CreateLamaranTerkirimTable extends Migration {
 	{
 		Schema::create('lamaran_terkirim', function(Blueprint $table)
 		{
-			$table->increments('id_lamaran_terkirim');
+			$table->integer('id_lamaran_terkirim', true);
 			$table->integer('id_kandidat')->index('lamaran_terkirim_fk0');
 			$table->integer('id_iklan')->index('lamaran_terkirim_fk1');
 			$table->date('tanggal_kirim');
