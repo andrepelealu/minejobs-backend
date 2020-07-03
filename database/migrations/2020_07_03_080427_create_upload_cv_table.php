@@ -14,7 +14,7 @@ class CreateUploadCvTable extends Migration {
 	{
 		Schema::create('upload_cv', function(Blueprint $table)
 		{
-			$table->integer('id_cv', true);
+			$table->increments('id_cv');
 			$table->integer('id_kandidat')->index('upload_cv_fk0');
 			$table->string('url_cv');
 		});

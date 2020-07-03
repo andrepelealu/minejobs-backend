@@ -14,7 +14,7 @@ class CreateUndanganInterviewTable extends Migration {
 	{
 		Schema::create('undangan_interview', function(Blueprint $table)
 		{
-			$table->integer('id_undangan_interview', true);
+			$table->increments('id_undangan_interview');
 			$table->integer('id_kandidat')->index('undangan_interview_fk0');
 			$table->integer('id_perusahaan')->index('undangan_interview_fk1');
 			$table->string('pesan');

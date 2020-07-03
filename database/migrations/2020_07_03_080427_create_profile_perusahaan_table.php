@@ -14,7 +14,7 @@ class CreateProfilePerusahaanTable extends Migration {
 	{
 		Schema::create('profile_perusahaan', function(Blueprint $table)
 		{
-			$table->integer('id_profile_perusahaan', true);
+			$table->increments('id_profile_perusahaan');
 			$table->integer('id_perusahaan')->index('profile_perusahaan_fk0');
 			$table->string('nama_perusahaan');
 			$table->string('alamat_perusahaan');

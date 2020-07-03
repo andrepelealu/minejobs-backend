@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateUserPerusahaanTable extends Migration {
+class CreateUserAdminTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateUserPerusahaanTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('user_perusahaan', function(Blueprint $table)
+		Schema::create('user_admin', function(Blueprint $table)
 		{
-			$table->increments('id_perusahaan', true);
-			$table->string('socialite_id')->nullable();
-			$table->string('socialite_provider')->nullable();
+			$table->increments('id_admin');
 			$table->string('email');
 			$table->string('password')->nullable();
-			$table->string('status')->nullable();
+			$table->timestamps();
 		});
 	}
 
@@ -31,7 +29,7 @@ class CreateUserPerusahaanTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('user_perusahaan');
+		Schema::drop('user_admin');
 	}
 
 }
