@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePicTable extends Migration
+class AddForeignKeysToPic extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreatePicTable extends Migration
      */
     public function up()
     {
-        Schema::create('pic_perusahaan', function (Blueprint $table) {
-			$table->integer('id', true);
-			$table->integer('id_perusahaan')->index('profile_perusahaan_fk0');
-			$table->string('nama_pic');
-			$table->string('no_telp_pic');
-			$table->string('url_ktp_pic')->nullable();
+        Schema::table('pic_perusahaan', function (Blueprint $table) {
+            //
+            $table->foreign('id_perusahaan', 'profile_perusahaan_fk0')->references('id')->on('user_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 
         });
     }
@@ -30,6 +27,8 @@ class CreatePicTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pic');
+        Schema::table('pic', function (Blueprint $table) {
+            //
+        });
     }
 }
