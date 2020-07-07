@@ -23,6 +23,9 @@ class CreateProfilePerusahaanTable extends Migration {
 			$table->string('foto_perusahaan');
 			$table->string('website_perusahaan');
 			$table->string('jenis_industri');
+			$table->string('no_telp_perusahaan');
+			$table->string('no_npwp_perusahaan');
+			$table->string('url_npwp_perusahaan')->nullable();
 		});
 	}
 

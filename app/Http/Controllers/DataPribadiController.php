@@ -96,6 +96,21 @@ class DataPribadiController extends Controller
 
     }
     public function DeleteDataPribadi(){
-        
+        $data = DataPribadiModel::find($id,'id_kandidat')->first();
+        if(count($data)>0){
+            if($data->delete()){
+                $res['message'] = 'Berhasil Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }       
     }
 }
