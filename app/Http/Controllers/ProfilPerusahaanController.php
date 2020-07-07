@@ -20,6 +20,9 @@ class ProfilPerusahaanController extends Controller
         'foto_perusahaan'=>'required|string',
         'website_perusahaan'=>'required|string',
         'jenis_industri'=>'required|string',
+        'no_telp_perusahaan'=>'required|string',
+        'no_npwp_perusahaan'=>'required|string',
+        'url_npwp_perusahaan'=>'required|string',
 
         ]
     );
@@ -33,8 +36,12 @@ class ProfilPerusahaanController extends Controller
             $input->tentang_perusahaan = $req->tentang_perusahaan;
             $input->url_banner = $req->url_banner;
             $input->foto_perusahaan = $req->foto_perusahaan;
-            $input->website_perusahaan = $req->website_perusahaan;
             $input->jenis_industri = $req->jenis_industri;
+            $input->website_perusahaan = $req->website_perusahaan;
+            $input->no_tlp_perusahaan = $req->no_tlp_perusahaan;
+            $input->no_npwp_perusahaan = $req->no_npwp_perusahaan;
+            $input->url_npwp_perusahaan = $req->url_npwp_perusahaan;
+
             $input->save();
 
         $res['message'] = 'berhasil post';
@@ -60,15 +67,20 @@ class ProfilPerusahaanController extends Controller
     {
         $data = ProfilPerusahaanModel::find($id,'id_perusahaan')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->id_perusahaan      = $req->id_perusahaan;
-        $data->nama_perusahaan    = $req->nama_perusahaan;
-        $data->alamat_perusahaan  = $req->alamat_perusahaan;
-        $data->tentang_perusahaan = $req->tentang_perusahaan;
-        $data->url_banner         = $req->url_banner;
-        $data->foto_perusahaan    = $req->foto_perusahaan;
-        $data->website_perusahaan = $req->website_perusahaan;
-        $data->jenis_industri     = $req->jenis_industri;
-    if(count($data)>0){
+        $data->id_perusahaan        = $req->id_perusahaan;
+        $data->nama_perusahaan      = $req->nama_perusahaan;
+        $data->alamat_perusahaan    = $req->alamat_perusahaan;
+        $data->tentang_perusahaan   = $req->tentang_perusahaan;
+        $data->url_banner           = $req->url_banner;
+        $data->foto_perusahaan      = $req->foto_perusahaan;
+        $data->website_perusahaan   = $req->website_perusahaan;
+        $data->jenis_industri       = $req->jenis_industri;
+        $data->website_perusahaan   = $req->website_perusahaan;
+        $data->no_tlp_perusahaan    = $req->no_tlp_perusahaan;
+        $data->no_npwp_perusahaan   = $req->no_npwp_perusahaan;
+        $data->url_npwp_perusahaan  = $req->url_npwp_perusahaan;
+
+        if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
