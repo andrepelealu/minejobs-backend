@@ -15,7 +15,7 @@ class CreatePicTable extends Migration
     {
         Schema::create('pic_perusahaan', function (Blueprint $table) {
 			$table->integer('id', true);
-			$table->integer('id_perusahaan')->index('profile_perusahaan_fk0');
+			$table->integer('id_perusahaan')->index('pic_perusahaan_fk0');
 			$table->string('nama_pic');
 			$table->string('no_telp_pic');
 			$table->string('url_ktp_pic')->nullable();

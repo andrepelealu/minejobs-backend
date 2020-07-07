@@ -15,7 +15,7 @@ class AddForeignKeysToPic extends Migration
     {
         Schema::table('pic_perusahaan', function (Blueprint $table) {
             //
-            $table->foreign('id_perusahaan', 'profile_perusahaan_fk0')->references('id')->on('user_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('id_perusahaan', 'pic_perusahaan_fk0')->references('id')->on('user_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 
         });
     }
