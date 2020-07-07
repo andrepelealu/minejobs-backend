@@ -58,17 +58,17 @@ class PengalamanController extends Controller
         }
     }
 
-    public function UpdatePengalaman($id)
+    public function UpdatePengalaman(Request $req, $id)
     {
-        $data = DataPribadiModel::find($id,'id_kandidat')->first();
+        $data = Pengalaman::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->nama_depan       = $req->nama_depan;
-        $data->nama_belakang    = $req->nama_belakang;
-        $data->nomor_telepon    = $req->nomor_telepon;
-        $data->provinsi         = $req->provinsi;
-        $data->kota             = $req->kota;
-        $data->tentang          = $req->tentang;
-        $data->foto_profile     = $req->foto_profile;
+        $data->id_kandidat = $req->id_kandidat;
+        $data->posisi_pekerjaan = $req->posisi_pekerjaan;
+        $data->nama_perusahaan = $req->nama_perusahaan;
+        $data->tahun_mulai = $req->tahun_mulai;
+        $data->tahun_selesai = $req->tahun_selesai;
+        $data->jabatan = $req->jabatan;
+        $data->gaji = $req->gaji;
         if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
@@ -88,6 +88,21 @@ class PengalamanController extends Controller
 
     public function DeletePengalaman($id)
     {
-        # code...
+        $data = Pengalaman::find($id,'id_kandidat')->first();
+        if(count($data)>0){
+            if($data->delete()){
+                $res['message'] = 'Berhasil Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }
     }
 }

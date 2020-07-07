@@ -47,17 +47,13 @@ class KeahlianController extends Controller
             return $res;
         }
     }
-    public function UpdateKeahlian($id)
+    public function UpdateKeahlian(Request $req, $id)
     {
-        $data = DataPribadiModel::find($id,'id_kandidat')->first();
+        $data = Keahlian::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->nama_depan       = $req->nama_depan;
-        $data->nama_belakang    = $req->nama_belakang;
-        $data->nomor_telepon    = $req->nomor_telepon;
-        $data->provinsi         = $req->provinsi;
-        $data->kota             = $req->kota;
-        $data->tentang          = $req->tentang;
-        $data->foto_profile     = $req->foto_profile;
+        $data->id_kandidat = $req->id_kandidat;
+        $data->nama_keahlian = $req->nama_keahlian;
+        $data->tingkatan = $req->tingkatan;
         if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
@@ -76,6 +72,21 @@ class KeahlianController extends Controller
     }
     public function DeleteKeahlian($id)
     {
-        # code...
+        $data = Keahlian::find($id,'id_kandidat')->first();
+        if(count($data)>0){
+            if($data->delete()){
+                $res['message'] = 'Berhasil Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }
     }
 }

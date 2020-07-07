@@ -54,17 +54,17 @@ class PreferensiPekerjaanController extends Controller
             return $res;
         }
     }
-    public function UpdatePreferensiPekerjaan($id)
+    public function UpdatePreferensiPekerjaan(Request $req, $id)
     {
-        $data = DataPribadiModel::find($id,'id_kandidat')->first();
+        $data = PreferensiPekerjaan::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->nama_depan       = $req->nama_depan;
-        $data->nama_belakang    = $req->nama_belakang;
-        $data->nomor_telepon    = $req->nomor_telepon;
-        $data->provinsi         = $req->provinsi;
-        $data->kota             = $req->kota;
-        $data->tentang          = $req->tentang;
-        $data->foto_profile     = $req->foto_profile;
+        $data->id_kandidat = $req->id_kandidat;
+        $data->gaji_diharapkan = $req->gaji_diharapkan;
+        $data->provinsi = $req->provinsi;
+        $data->kota = $req->kota;
+        $data->provinsi = $req->provinsi;
+        $data->kota = $req->kota;
+        $data->bidang_pekerjaan = $req->bidang_pekerjaan;
         if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
@@ -83,7 +83,22 @@ class PreferensiPekerjaanController extends Controller
     }
     public function DeletePreferensiPekerjaan($id)
     {
-        # code...
+        $data = PreferensiPekerjaan::find($id,'id_kandidat')->first();
+        if(count($data)>0){
+            if($data->delete()){
+                $res['message'] = 'Berhasil Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }
     }
 
 }

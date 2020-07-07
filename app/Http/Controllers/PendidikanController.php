@@ -51,19 +51,17 @@ class PendidikanController extends Controller
             return $res;
         }
     }
-    public function UpdatePendidikan($id)
+    public function UpdatePendidikan(Request $req, $id)
     {
-        $data = DataPribadiModel::find($id,'id_kandidat')->first();
+        $data = Pendidikan::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->nama_depan       = $req->nama_depan;
-        $data->nama_belakang    = $req->nama_belakang;
-        $data->nomor_telepon    = $req->nomor_telepon;
-        $data->provinsi         = $req->provinsi;
-        $data->kota             = $req->kota;
-        $data->tentang          = $req->tentang;
-        $data->foto_profile     = $req->foto_profile;
+        $data->id_kandidat = $req->id_kandidat;
+        $data->jurusan = $req->nama_depan;
+        $data->tahun_mulai = $req->nama_belakang;
+        $data->tahun_selesai = $req->nomor_telepon;
+        $data->nama_instansi = $req->provinsi;
         if(count($data)>0){
-            if($data->save()){
+            if($input->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
                 return $res;
@@ -80,6 +78,21 @@ class PendidikanController extends Controller
     }
     public function DeletePendidikan($id)
     {
-        # code...
+        $data = Pendidikan::find($id,'id_kandidat')->first();
+        if(count($data)>0){
+            if($data->delete()){
+                $res['message'] = 'Berhasil Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal Dihapus';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }
     }
 }
