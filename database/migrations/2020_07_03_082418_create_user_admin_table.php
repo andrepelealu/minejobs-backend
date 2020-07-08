@@ -16,7 +16,7 @@ class CreateUserAdminTable extends Migration {
 		{
 			$table->integer('id')->primary();
 			$table->string('email');
-			$table->binary('password', 1);
+			$table->string('password', 1);
 			$table->timestamps();
 		});
 	}

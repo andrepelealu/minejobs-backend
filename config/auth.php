@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'kandidat',
         'passwords' => 'users',
     ],
 
@@ -36,15 +36,14 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'kandidat' => [
+            'driver' => 'jwt',
+            'provider' => 'kandidat',
         ],
 
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
+        'perusahaan' => [
+            'driver' => 'jwt',
+            'provider' => 'perusahaan'
         ],
     ],
 
@@ -66,9 +65,13 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'kandidat' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\UserKandidat::class,
+        ],
+        'perusahaan' => [
+            'driver' => 'eloquent',
+            'model' => App\UserPerusahaan::class,
         ],
 
         // 'users' => [

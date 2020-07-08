@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\LamaranTerimpan;
+use App\LamaranTersimpan;
 use Illuminate\Http\Request;
 
 class LamaranTersimpanController extends Controller
@@ -9,8 +9,8 @@ class LamaranTersimpanController extends Controller
     //Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
     //Route::post('lamaran-tersimpan','LamaranTersimpanController@PostLamaranTersimpan');
 
-    public function GetLamaranTersimpan($id){
-        $data = LamaranTerimpan::where('id_kandidat',$id)->get();
+    public function GetLamaranTersimpan(){
+        $data = LamaranTersimpan::all();
         if(count($data)>0){
             $res['count'] = count($data);
             $res['message'] = 'data ditemukan';
@@ -34,7 +34,7 @@ class LamaranTersimpanController extends Controller
     if($validator->fails()){
         return response()->json($validator->errors()->toJson(), 400);
     }
-    $input = new LamaranTerimpan;
+    $input = new LamaranTersimpan;
     $input->id_kandidat = $req->id_kandidat;
     $input->id_iklan = $req->id_iklan;
     $input->id_kandidat = $req->id_kandidat;

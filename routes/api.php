@@ -13,13 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/*LOGIN REGISTER KANDIDAT*/
+Route::post('kandidat/register', 'UserKandidatController@register');
+Route::post('kandidat/login', 'UserKandidatController@login');
+/*END LOGIN REGISTER */
+
+/*LOGIN REGISTER KANDIDAT*/
+Route::post('perusahaan/register', 'UserPerusahaanController@register');
+Route::post('perusahaan/login', 'UserPerusahaanController@login');
+/*END LOGIN REGISTER */
 
 /* DATA PRIBADI */
 Route::post('data-pribadi','DataPribadiController@PostDataPribadi');
-Route::get('data-pribadi','DataPribadiController@GetDataPribadi');
+Route::get('data-pribadi','DataPribadiController@GetDataPribadi')->middleware('jwt.verify');
 Route::get('data-pribadi/{id}','DataPribadiController@GetDataPribadiById');
 Route::put('data-pribadi/{id}','DataPribadiController@UpdateDataPribadi');
 // Route::delete('data-pribadi','DataPribadiController@DeleteDataPribadi');
@@ -74,8 +80,18 @@ Route::get('lamaran-terkirim/{$id}','LamaranTerkirim@GetLamaranTerkirim');
 /*END*/
 
 /*LAMARAN TERSIMPAN*/
+//Here is the protected User Routes Group,  
+Route::group(['middleware' => 'jwt.auth', 'prefix' => 'user'], function(){
+    Route::get('logout', 'Api\User\UserController@logout');
+    Route::get('dashboard', 'Api\User\UserController@dashboard');
+});
 
-Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
+Route::group(['prefix' => 'kandidat','middleware' => ['jwt.verify:kandidat','jwt.auth']],function ()
+{
+	Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
+});
+
+// Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan')->middleware('jwt.verify:kandidat');
 Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
 
 /*END*/

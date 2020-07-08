@@ -15,8 +15,8 @@ class CreateUserKandidatTable extends Migration {
 		Schema::create('user_kandidat', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('socialite_id');
-			$table->string('socialite_provider');
+			$table->string('socialite_id')->nullable();
+			$table->string('socialite_provider')->nullable();
 
 			$table->string('email');
 			$table->string('password')->nullable();
