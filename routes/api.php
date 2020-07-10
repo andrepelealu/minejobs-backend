@@ -83,6 +83,9 @@ Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan'
 /*LAMARAN JADWAL INTERVIEW*/
 
 Route::get('jadwal-interview/{id}','JadwalInterviewController@GetJadwalInterview');
+Route::get('jadwal-perusahaan/{id}','GetJadwalController@GetJadwalPerusahaan');
+Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
+
 
 /*END*/
 
@@ -108,13 +111,19 @@ Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusaha
 Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');
 Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
 Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
+Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');
+// Route::get('filter-kota/{kota}','IklanPerusahaanController@GetIklanPerusahaanByKota');
+Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');
+Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');
+
+
 
 /*END*/
 
 /*PELAMAR PERUSAHAAN*/
 Route::post('pelamar-perusahaan/{id}','PelamarPerusahaanController@PostPelamarPerusahaan');
 Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
-Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdatePelamarPerusahaan');
+Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
 Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
 
 /*END*/

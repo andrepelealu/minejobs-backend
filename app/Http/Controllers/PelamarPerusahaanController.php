@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pelamar_Perusahaan;
+use Illuminate\Support\Facades\Validator;
 
 class PelamarPerusahaanController extends Controller
 {
@@ -10,13 +12,15 @@ class PelamarPerusahaanController extends Controller
         $validator = Validator::make($req->all(), [
             'id_kandidat' => 'required|',
             'id_iklan' => 'required|string',
+            'id_perusahaan' => 'required|string',
             'tanggal_lamaran' =>'required|string',
+            
         ]
     );
     if($validator->fails()){
         return response()->json($validator->errors()->toJson(), 400);
     }
-    $input = new PelamarPerusahaanModel;
+    $input = new Pelamar_Perusahaan;
     $input->id_kandidat = $req->id_kandidat;
     $input->id_iklan = $req->id_iklan;
     $input->tanggal_lamaran = $req->tanggal_lamaran;
@@ -28,7 +32,7 @@ class PelamarPerusahaanController extends Controller
     return response()->json($res, 200);
     }
     public function GetPelamarPerusahaanById($id){
-        $data = PelamarPerusahaanModel::where('id',$id)->get();
+        $data = Pelamar_Perusahaan::where('id_perusahaan',$id)->get();
         if(count($data)>0){
             $res['count'] = count($data);
             $res['message'] = 'data ditemukan';
@@ -42,7 +46,7 @@ class PelamarPerusahaanController extends Controller
 
     }
     public function GetPelamarPerusahaan(){
-        $data = PelamarPerusahaan::all();
+        $data = Pelamar_Perusahaan::all();
         if(count($data)>0){
             $res['count'] = count($data);
             $res['message'] = 'data ditemukan';
@@ -55,13 +59,13 @@ class PelamarPerusahaanController extends Controller
         }
 
     }
-    public function UpdatePelamarPerusahaan(Request $req , $id){
+    public function UpdateStatusPelamar(Request $req , $id){
 
-        $data = PelamarPerusahaanModel::find($id,'id_perusahaan')->first();
+        $data = Pelamar_Perusahaan::find($id,'id_kandidat')->first();
         // $data->id_perusahaan = $req->id_perusahaan;
-        $data->id_kandidat = $req->id_kandidat;
-        $data->id_iklan = $req->id_iklan;
-        $data->tanggal_lamaran = $req->tanggal_lamaran;            
+        $data->status_lamaran = $req->status_lamaran;
+        // $data->id_iklan = $req->id_iklan;
+        // $data->tanggal_lamaran = $req->tanggal_lamaran;            
         if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
@@ -80,7 +84,7 @@ class PelamarPerusahaanController extends Controller
 
     }
     public function DeletePelamarPerusahaan(){
-        $data = PelamarPerusahaanModel::find($id,'id_perusahaan')->first();
+        $data = Pelamar_Perusahaan::find($id,'id_perusahaan')->first();
         if(count($data)>0){
             if($data->delete()){
                 $res['message'] = 'Berhasil Dihapus';
