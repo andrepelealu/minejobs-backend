@@ -20,7 +20,7 @@ Route::post('kandidat/logout', 'UserKandidatController@logout');
 Route::post('kandidat/recover', 'UserKandidatController@recover');
 
 /*END LOGIN REGISTER */
-
+Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
 /*LOGIN REGISTER KANDIDAT*/
 Route::post('perusahaan/register', 'UserPerusahaanController@register');
 Route::post('perusahaan/login', 'UserPerusahaanController@login');

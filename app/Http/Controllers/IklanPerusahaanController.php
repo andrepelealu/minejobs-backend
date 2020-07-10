@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Iklan_Perusahaan;
+use Illuminate\Support\Facades\Validator;
 
 class IklanPerusahaanController extends Controller
 {

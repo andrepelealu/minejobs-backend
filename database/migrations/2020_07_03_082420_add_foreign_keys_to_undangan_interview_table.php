@@ -16,6 +16,8 @@ class AddForeignKeysToUndanganInterviewTable extends Migration {
 		{
 			$table->foreign('id_kandidat', 'undangan_interview_fk0')->references('id')->on('user_kandidat')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 			$table->foreign('id_perusahaan', 'undangan_interview_fk1')->references('id')->on('user_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('id_iklan', 'undangan_interview_fk2')->references('id')->on('iklan_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+
 		});
 	}
 
