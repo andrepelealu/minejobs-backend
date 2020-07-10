@@ -116,3 +116,26 @@ Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInt
 Route::post('atur-ulang','AturUlangController@PostAturUlang');
 
 /*END*/
+
+/*PROFIL PERUSAHAAN*/
+Route::post('profil-perusahaan/{id}','ProfilPerusahaanController@PostProfilPerusahaan');
+Route::get('profil-perusahaan/{id}','ProfilPerusahaanController@GetProfilPerusahaan');
+Route::put('profil-perusahaan/{id}','ProfilPerusahaanController@UpdateProfilPerusahaan');
+
+/*END*/
+
+/*IKLAN PERUSAHAAN*/
+Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusahaan');
+Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');
+Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
+Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
+
+/*END*/
+
+/*PELAMAR PERUSAHAAN*/
+Route::post('pelamar-perusahaan/{id}','PelamarPerusahaanController@PostPelamarPerusahaan');
+Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
+Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdatePelamarPerusahaan');
+Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
+
+/*END*/
