@@ -15,8 +15,13 @@ use Validator;
 use JWTFactory;
 use JWTAuth;
 use JWTAuthException;
+use Mail,DB;
 use App\UserKandidat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Password;
+// use Illuminate\Mail\Mailer;
+
 
 class UserKandidatController extends Controller
 {
@@ -24,6 +29,61 @@ class UserKandidatController extends Controller
     // {
     //     $this->user = new User;
     // }
+    public function recover(Request $request)
+    {
+        $user = UserKandidat::where('email', $request->email)->first();
+        if (!$user) {
+            $error_message = "Your email address was not found.";
+            return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
+        }
+
+        try {
+            Password::sendResetLink($request->only('email'), function (Message $message) {
+                $message->subject('Your Password Reset Link');
+            });
+
+        } catch (\Exception $e) {
+            //Return with error
+            $error_message = $e->getMessage();
+            return response()->json(['success' => false, 'error' => $error_message], 401);
+        }
+
+        return response()->json([
+            'success' => true, 'data'=> ['message'=> 'A reset email has been sent! Please check your email.']
+        ]);
+    }
+    public function verifyUser($verification_code)
+    {
+        $check = DB::table('user_kandidat_verification')->where('token',$verification_code)->first();
+
+        if(!is_null($check)){
+            $user = UserKandidat::find($check->id_kandidat);
+
+            if($user->status_akun == 1){
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'Account already verified..'
+                ]);
+            }
+
+            DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
+            if($user->update(['status_akun' => 1])){
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'You have successfully verified your email address.'
+                ]);
+            }else{
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'Fail'
+                ]);
+            }
+           
+        }
+
+        return response()->json(['success'=> false, 'error'=> "Verification code is invalid."]);
+
+    }
 
     public function login(Request $request)
     {
@@ -58,11 +118,21 @@ class UserKandidatController extends Controller
         }
 
         $user = UserKandidat::create([
-            'name' => $request->get('name'),
+            // 'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'status_akun' => 'unverified'
+            'password' => Hash::make($request->get('password'))
         ]);
+        $email = $request->email;
+        $verification_code = str_random(30); //Generate verification code
+        DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
+
+        $subject = "Minejobs | Verifikasi Email Anda";
+        Mail::send('email.verify', ['verification_code' => $verification_code],
+            function($mail) use ($email, $subject){
+                $mail->from('donotreply@minejobs.id');
+                $mail->to($email);
+                $mail->subject($subject);
+            });
 
         $token = JWTAuth::fromUser($user);
 

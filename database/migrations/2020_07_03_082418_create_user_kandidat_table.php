@@ -21,7 +21,7 @@ class CreateUserKandidatTable extends Migration {
 			$table->string('email');
 			$table->string('password')->nullable();
 	
-			$table->string('status_akun');
+			$table->boolean('status_akun')->default(0);
 			$table->timestamps();
 		});
 	}

@@ -16,11 +16,16 @@ use Illuminate\Http\Request;
 /*LOGIN REGISTER KANDIDAT*/
 Route::post('kandidat/register', 'UserKandidatController@register');
 Route::post('kandidat/login', 'UserKandidatController@login');
+Route::post('kandidat/logout', 'UserKandidatController@logout');
+Route::post('kandidat/recover', 'UserKandidatController@recover');
+
 /*END LOGIN REGISTER */
 
 /*LOGIN REGISTER KANDIDAT*/
 Route::post('perusahaan/register', 'UserPerusahaanController@register');
 Route::post('perusahaan/login', 'UserPerusahaanController@login');
+Route::post('perusahaan/logout', 'UserPerusahaanController@logout');
+
 /*END LOGIN REGISTER */
 
 /* DATA PRIBADI */
@@ -81,10 +86,10 @@ Route::get('lamaran-terkirim/{$id}','LamaranTerkirim@GetLamaranTerkirim');
 
 /*LAMARAN TERSIMPAN*/
 //Here is the protected User Routes Group,  
-Route::group(['middleware' => 'jwt.auth', 'prefix' => 'user'], function(){
-    Route::get('logout', 'Api\User\UserController@logout');
-    Route::get('dashboard', 'Api\User\UserController@dashboard');
-});
+// Route::group(['middleware' => 'jwt.auth', 'prefix' => 'user'], function(){
+//     Route::get('logout', 'Api\User\UserController@logout');
+//     Route::get('dashboard', 'Api\User\UserController@dashboard');
+// });
 
 Route::group(['prefix' => 'kandidat','middleware' => ['jwt.verify:kandidat','jwt.auth']],function ()
 {

@@ -60,8 +60,7 @@ class UserPerusahaanController extends Controller
         $user = UserPerusahaan::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'status' => 'unverified'
+            'password' => Hash::make($request->get('password'))
         ]);
 
         $token = JWTAuth::fromUser($user);
