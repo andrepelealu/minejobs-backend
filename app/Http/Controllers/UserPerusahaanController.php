@@ -2,38 +2,99 @@
 
 namespace App\Http\Controllers;
 
-use App\UserPerusahaan;
-use Illuminate\Http\Request;
+// use App\UserPerusahaan;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
+// use JWTAuth;
+// use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Validator;
+use JWTFactory;
 use JWTAuth;
 use JWTAuthException;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Mail,DB;
+use App\UserPerusahaan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Password;
+use Laravel\Socialite\Facades\Socialite;
+
+// use Illuminate\Mail\Mailer;
+
 
 class UserPerusahaanController extends Controller
 {
-    function generateRandomString($length) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+    // public function __construct()
+    // {
+    //     $this->user = new User;
+    // }
+    public function recover(Request $request)
+    {
+        $user = UserPerusahaan::where('email', $request->email)->first();
+        if (!$user) {
+            $error_message = "Your email address was not found.";
+            return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
         }
-        return $randomString;
+
+        try {
+            Password::sendResetLink($request->only('email'), function (Message $message) {
+                $message->subject('Your Password Reset Link');
+            });
+
+        } catch (\Exception $e) {
+            //Return with error
+            $error_message = $e->getMessage();
+            return response()->json(['success' => false, 'error' => $error_message], 401);
+        }
+
+        return response()->json([
+            'success' => true, 'data'=> ['message'=> 'A reset email has been sent! Please check your email.']
+        ]);
+    }
+    public function verifyUser($verification_code)
+    {
+        $check = DB::table('user_kandidat_verification')->where('token',$verification_code)->first();
+
+        if(!is_null($check)){
+            $user = UserPerusahaan::find($check->id_kandidat);
+
+            if($user->status_akun == 1){
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'Account already verified..'
+                ]);
+            }
+
+            DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
+            if($user->update(['status_akun' => 1])){
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'You have successfully verified your email address.'
+                ]);
+            }else{
+                return response()->json([
+                    'success'=> true,
+                    'message'=> 'Fail'
+                ]);
+            }
+           
+        }
+
+        return response()->json(['success'=> false, 'error'=> "Verification code is invalid."]);
+
     }
 
     public function login(Request $request)
     {
-
         $credentials = $request->only('email', 'password');
 
-        config()->set( 'auth.defaults.guard', 'perusahaan' );
         \Config::set('jwt.user', 'App\UserPerusahaan'); 
 		\Config::set('auth.providers.users.model', \App\UserPerusahaan::class);
-        $credentials = $request->only('email', 'password');
+		$credentials = $request->only('email', 'password');
         $token = null;
         
-
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
@@ -49,7 +110,7 @@ class UserPerusahaanController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:user_perusahaan',
+            'email' => 'required|string|email|max:255|unique:user_kandidat',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -58,10 +119,21 @@ class UserPerusahaanController extends Controller
         }
 
         $user = UserPerusahaan::create([
-            'name' => $request->get('name'),
+            // 'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password'))
         ]);
+        $email = $request->email;
+        $verification_code = str_random(30); //Generate verification code
+        DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
+
+        $subject = "Minejobs | Verifikasi Email Anda";
+        Mail::send('email.verify', ['verification_code' => $verification_code],
+            function($mail) use ($email, $subject){
+                $mail->from('donotreply@minejobs.id');
+                $mail->to($email);
+                $mail->subject($subject);
+            });
 
         $token = JWTAuth::fromUser($user);
 
@@ -91,5 +163,56 @@ class UserPerusahaanController extends Controller
         }
 
         return response()->json(compact('user'));
+    }
+
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    /**
+     * Obtain the user information from provider.  Check if the user already exists in our
+     * database by looking up their provider_id in the database.
+     * If the user exists, log them in. Otherwise, create a new user then log them in. After that
+     * redirect them to the authenticated users homepage.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback($provider)
+    {
+        $user = Socialite::driver($provider)->stateless()->user();
+        $email = $user->email;
+        $authUser = $this->findOrCreateUser($user, $provider);
+        Auth::login($authUser, true);
+        // $token = JWTAuth::fromUser($user);
+        $dummyuser = array(
+            'email'=>$user->email,
+            'remember_token'=>$user->token
+        );
+        $token = JWTAuth::fromUser($authUser);
+        $res['token'] = $token.rand(0, 9);
+        $res['real_token'] = substr($res['token'], 0, -1);
+        $res['user'] = $user;
+        return response()->json($res);
+
+        // return redirect('/');
+    }
+
+
+    public function findOrCreateUser($user, $provider)
+    {
+        $authUser = UserPerusahaan::where('email', $user->email)->first();
+        if ($authUser) {
+            return $authUser;
+        }
+        else{
+            $data = UserPerusahaan::create([
+                'email'    => !empty($user->email)? $user->email : '' ,
+                'socialite_provider' => $provider,
+                'socialite_id' => $user->id,
+                'status_akun' => 1
+            ]);
+            return $data;
+        }
     }
 }

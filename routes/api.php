@@ -18,6 +18,14 @@ Route::post('kandidat/register', 'UserKandidatController@register');
 Route::post('kandidat/login', 'UserKandidatController@login');
 Route::post('kandidat/logout', 'UserKandidatController@logout');
 Route::post('kandidat/recover', 'UserKandidatController@recover');
+Route::get('kandidat/getuser', 'UserKandidatController@getAuthenticatedUser');
+
+Route::group(['middleware' => ['web']], function () {
+	Route::get('kandidat/auth/{provider}', 'UserKandidatController@redirectToProvider');
+	Route::get('perusahaan/auth/{provider}', 'UserPerusahaanController@redirectToProvider');
+	Route::get('auth/{provider}/callback', 'UserPerusahaanController@handleProviderCallback');
+});
+
 
 /*END LOGIN REGISTER */
 Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');

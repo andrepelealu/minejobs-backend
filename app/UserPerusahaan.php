@@ -20,7 +20,7 @@ class UserPerusahaan extends Authenticatable implements JWTSubject
     public $timestamps = false;
 
     protected $fillable = [
-        'socialite_id','socialite_provider','email', 'password','status'
+        'socialite_id','socialite_provider','email', 'password','status_akun'
     ];
 
     /**
