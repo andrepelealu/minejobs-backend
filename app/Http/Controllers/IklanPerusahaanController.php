@@ -3,27 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Iklan_Perusahaan;
 use Illuminate\Support\Facades\Validator;
-
+use App\Iklan_Perusahaan;
+use DB;
 class IklanPerusahaanController extends Controller
 {
     public function PostIklanPerusahaan(Request $req){
         $validator = Validator::make($req->all(), [
             'id_perusahaan' => 'required',
-            'nama_depan' => 'required|string',
-            'nama_belakang' =>'required|string',
-            'nomor_telepon' =>'required|string',
+            'posisi_pekerjaan' => 'required|string',
+            'gaji_min' =>'required|string',
+            'gaji_max' =>'required|string',
             'provinsi'=>'required|string',
             'kota'=>'required|string',
-            'tentang'=>'required|string',
-            'foto_profile'=>'required|string'
+            'bidang_pekerjaan'=>'required|string',
+            'tingkat_pendidikan'=>'required|string',
+            'pengalaman_kerja'=>'required|string',
+            'persyaratan'=>'required|string',
+            'benefit_perusahaan'=>'required|string',
+            'url_header'=>'required|string'
         ]
     );
     if($validator->fails()){
         return response()->json($validator->errors()->toJson(), 400);
     }
-    $input = new IklanPerusahaanModel;
+    $input = new Iklan_Perusahaan;
     $input->id_perusahaan = $req->id_perusahaan;
     $input->posisi_pekerjaan = $req->posisi_pekerjaan;
     $input->gaji_min = $req->gaji_min;
@@ -43,6 +47,7 @@ class IklanPerusahaanController extends Controller
     $res['data'] = $input;
     return response()->json($res, 200);
     }
+    
     public function GetIklanPerusahaanById($id){
         $data = IklanPerusahaanModel::where('id',$id)->get();
         if(count($data)>0){
@@ -55,23 +60,132 @@ class IklanPerusahaanController extends Controller
             $res['message'] = 'data tidak ditemukan';
             return $res;
         }
-
     }
-    public function GetIklanPerusahaan(){
-        $data = IklanPerusahaan::all();
-        if(count($data)>0){
+        // public function GetIklanPerusahaanByKota($kota){
+        //     $data = Iklan_Perusahaan::where('kota',$kota)->get();
+        //     if(count($data)>0){
+        //         $res['count'] = count($data);
+        //         $res['message'] = 'data ditemukan';
+        //         $res['data'] = $data;
+        //         return $res;
+        //     }else{
+        //         $res['count'] = count($data);
+        //         $res['message'] = 'data tidak ditemukan';
+        //         return $res;
+        //     }
+        // }
+        public function GetIklanPerusahaanByLokasi(Request $req){
+            $provinsi= $req->provinsi;
+            $kota= $req->kota;
+            $kota_      = Iklan_Perusahaan::where('kota',$kota)->get();
+            $provinsi_= Iklan_Perusahaan::where('provinsi',$provinsi)->get();
+            
+            if(count($kota_)>0) {
+                $res['count'] = count($kota_);
+                $res['message'] = 'data ditemukan';
+                $res['data'] = $kota_;
+                return $res;
+            }elseif(count($provinsi_)>0){
+                $res['count'] = count($provinsi_);
+                $res['message'] = 'data ditemukan';
+                $res['data'] = $provinsi_;
+                return $res;
+            }else{
+                $res['count'] = count($kota_);
+                $res['message'] = 'data tidak ditemukan';
+                return $res;
+            }
+        }
+        public function GetIklanPerusahaanByGaji($gaji){
+            $data = Iklan_Perusahaan::where('gaji_min','>=',$gaji)->get();
+            if(count($data)>0){
+                $res['count'] = count($data);
+                $res['message'] = 'data ditemukan';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['count'] = count($data);
+                $res['message'] = 'data tidak ditemukan';
+                return $res;
+            }
+        }
+        public function GetIklanPerusahaanByBidang($bidang){
+            $data = Iklan_Perusahaan::where('bidang_pekerjaan','>=',$bidang)->get();
+            if(count($data)>0){
+                $res['count'] = count($data);
+                $res['message'] = 'data ditemukan';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['count'] = count($data);
+                $res['message'] = 'data tidak ditemukan';
+                return $res;
+            }
+        }
+        public function GetIklanPerusahaan(){
+            $data = Iklan_Perusahaan::all();
+            if(count($data)>0){
+                $res['count'] = count($data);
+                $res['message'] = 'data ditemukan';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['count'] = count($data);
+                $res['message'] = 'data tidak ditemukan';
+                return $res;
+            }
+
+        }
+        public function CariIklanPerusahaan (Request $posisi)
+        {
+            // menangkap data pencarian
+            $cari = $posisi->posisi_pekerjaan;
+     
+                // mengambil data dari table pegawai sesuai pencarian data
+            // $data = Iklan_Perusahaan::where('posisi_pekerjaan','like',"%".$cari."%")->get();
+            // $data = DB::table('iklan_perusahaan')
+            //             ->join('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
+            //             ->where('iklan_perusahaan.posisi_pekerjaan','like','%'.$posisi.'%')
+                        // ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan')
+                        // ->get();
+
+            $data= DB::table('iklan_perusahaan')
+                    ->join('profile_perusahaan',function($join) use($cari){
+                        $join->on('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
+                            ->where('iklan_perusahaan.posisi_pekerjaan','like','%'.$cari.'%')
+                            ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan');
+                    })
+                    ->get();
+            if(count($data)>0){
+                // foreach ($data as $id) {
+                //     $id_perusahaan = $id->id_perusahaan;
+                //     $perusahaan = Iklan_Perusahaan::where("id_perusahaan",$id_perusahaan)->get();
+                // }
+
+
+                $res['count'] = count($data);
+                $res['message'] = 'data ditemukan';
+                $res['keyword'] = $cari;
+                $res['data'] = $data;
+                // $res['data'] = $perusahaan;
+
+                return $res;
+                
+            }else{
+                $res['count'] = count($data);
+                $res['message'] = 'data tidak ditemukan';
+                return $res;
+            }
             $res['count'] = count($data);
             $res['message'] = 'data ditemukan';
             $res['data'] = $data;
             return $res;
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
+
+
         }
 
-    }
-    public function UpdateIklanPerusahaan(Request $req , $id){
+            
+        public function UpdateIklanPerusahaan(Request $req , $id){
 
         $data = IklanPerusahaanModel::find($id,'id_perusahaan')->first();
         // $data->id_perusahaan = $req->id_perusahaan;

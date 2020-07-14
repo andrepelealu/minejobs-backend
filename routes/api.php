@@ -26,9 +26,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('auth/{provider}/callback', 'UserPerusahaanController@handleProviderCallback');
 });
 
-
 /*END LOGIN REGISTER */
-Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
 /*LOGIN REGISTER KANDIDAT*/
 Route::post('perusahaan/register', 'UserPerusahaanController@register');
 Route::post('perusahaan/login', 'UserPerusahaanController@login');
@@ -36,14 +34,21 @@ Route::post('perusahaan/logout', 'UserPerusahaanController@logout');
 
 /*END LOGIN REGISTER */
 
-/* DATA PRIBADI */
+/*LAMARAN TERSIMPAN*/
+//Here is the protected User Routes Group,  
+// Route::group(['middleware' => 'jwt.auth', 'prefix' => 'user'], function(){
+//     Route::get('logout', 'Api\User\UserController@logout');
+//     Route::get('dashboard', 'Api\User\UserController@dashboard');
+// });
+Route::middleware(['jwt.verify','jwt.auth'])->group(function () {
+	/* DATA PRIBADI */
+
 Route::post('data-pribadi','DataPribadiController@PostDataPribadi');
 Route::get('data-pribadi','DataPribadiController@GetDataPribadi')->middleware('jwt.verify');
 Route::get('data-pribadi/{id}','DataPribadiController@GetDataPribadiById');
 Route::put('data-pribadi/{id}','DataPribadiController@UpdateDataPribadi');
 // Route::delete('data-pribadi','DataPribadiController@DeleteDataPribadi');
 /* END DATA PRIBADI */
-
 /* PREFERENSI PEKERJAAN */
 Route::post('preferensi-pekerjaan','PreferensiPekerjaanController@PostPreferensiPekerjaan');
 Route::get('preferensi-pekerjaan/{$id}','PreferensiPekerjaanController@GetPreferensiPekerjaan');
@@ -92,17 +97,7 @@ Route::get('lamaran-terkirim/{$id}','LamaranTerkirim@GetLamaranTerkirim');
 
 /*END*/
 
-/*LAMARAN TERSIMPAN*/
-//Here is the protected User Routes Group,  
-// Route::group(['middleware' => 'jwt.auth', 'prefix' => 'user'], function(){
-//     Route::get('logout', 'Api\User\UserController@logout');
-//     Route::get('dashboard', 'Api\User\UserController@dashboard');
-// });
-
-Route::group(['prefix' => 'kandidat','middleware' => ['jwt.verify:kandidat','jwt.auth']],function ()
-{
-	Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
-});
+Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
 
 // Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan')->middleware('jwt.verify:kandidat');
 Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
@@ -112,7 +107,14 @@ Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan'
 /*LAMARAN JADWAL INTERVIEW*/
 
 Route::get('jadwal-interview/{id}','JadwalInterviewController@GetJadwalInterview');
+Route::get('jadwal-perusahaan/{id}','GetJadwalController@GetJadwalPerusahaan');
+Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 
+
+/*END*/
+
+/* KIRIM UNDANGAN */
+Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
 /*END*/
 
 /*UNDANGAN INTERVIEW*/
@@ -137,13 +139,23 @@ Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusaha
 Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');
 Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
 Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
+Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');
+// Route::get('filter-kota/{kota}','IklanPerusahaanController@GetIklanPerusahaanByKota');
+Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');
+Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');
+Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
+
+
 
 /*END*/
 
 /*PELAMAR PERUSAHAAN*/
 Route::post('pelamar-perusahaan/{id}','PelamarPerusahaanController@PostPelamarPerusahaan');
 Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
-Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdatePelamarPerusahaan');
+Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
 Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
 
 /*END*/
+
+});
+

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class JadwalInterview extends Model
 {
     //
-    protected $table = 'jadwal_interview';
+    protected $table = 'undangan_interview';
     public $timestamps = false;
 
     protected $fillable = [

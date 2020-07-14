@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\LamaranTersimpan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LamaranTersimpanController extends Controller
 {
