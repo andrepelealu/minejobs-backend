@@ -115,6 +115,7 @@ Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByG
 // Route::get('filter-kota/{kota}','IklanPerusahaanController@GetIklanPerusahaanByKota');
 Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');
 Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');
+Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
 
 
 
