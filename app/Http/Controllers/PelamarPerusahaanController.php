@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pelamar_Perusahaan;
+use App\UserKandidat;
+use Illuminate\Mail\Message;
+use Mail,DB;
 use Illuminate\Support\Facades\Validator;
 
 class PelamarPerusahaanController extends Controller
@@ -26,18 +29,7 @@ class PelamarPerusahaanController extends Controller
     $input->tanggal_lamaran = $req->tanggal_lamaran;
     // Table::select('name','surname')->where('id', 1)->get();
 
-    // $email : User_Kandidat::select('email')->where('id_kandidat',$req->id_kandidat)->get();
-
-    $subject = "Minejobs | Verifikasi Email Anda";
-    Mail::send('email.verify', ['verification_code' => $verification_code],
-        function($mail) use ($email, $subject){
-            $mail->from('donotreply@minejobs.id');
-            $mail->to($email);
-            $mail->subject($subject);
-        });
-
     $input->save();
-
     $res['message'] = 'berhasil post';
     $res['data'] = $input;
     return response()->json($res, 200);

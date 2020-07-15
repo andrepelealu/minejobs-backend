@@ -140,15 +140,6 @@ class IklanPerusahaanController extends Controller
         {
             // menangkap data pencarian
             $cari = $posisi->posisi_pekerjaan;
-     
-                // mengambil data dari table pegawai sesuai pencarian data
-            // $data = Iklan_Perusahaan::where('posisi_pekerjaan','like',"%".$cari."%")->get();
-            // $data = DB::table('iklan_perusahaan')
-            //             ->join('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
-            //             ->where('iklan_perusahaan.posisi_pekerjaan','like','%'.$posisi.'%')
-                        // ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan')
-                        // ->get();
-
             $data= DB::table('iklan_perusahaan')
                     ->join('profile_perusahaan',function($join) use($cari){
                         $join->on('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
@@ -157,11 +148,6 @@ class IklanPerusahaanController extends Controller
                     })
                     ->get();
             if(count($data)>0){
-                // foreach ($data as $id) {
-                //     $id_perusahaan = $id->id_perusahaan;
-                //     $perusahaan = Iklan_Perusahaan::where("id_perusahaan",$id_perusahaan)->get();
-                // }
-
 
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';

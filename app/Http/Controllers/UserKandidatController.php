@@ -30,6 +30,16 @@ class UserKandidatController extends Controller
     // {
     //     $this->user = new User;
     // }
+    public function logout(Request $request){
+        try{
+            $this->validate($request,['token'=> 'required']);
+            JWTAuth::invalidate($request->input('token'));
+            return response()->json(['sukses' => true,'pesan'=>'Berhasil Log Out']);
+        }catch(\Exception $e){
+            return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout'], $e->getStatusCode());
+        }
+    }
+    
     public function recover(Request $request)
     {
         $user = UserKandidat::where('email', $request->email)->first();

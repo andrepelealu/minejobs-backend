@@ -113,14 +113,9 @@ Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 
 /*END*/
 
-/* KIRIM UNDANGAN */
-Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
-/*END*/
 
-/*UNDANGAN INTERVIEW*/
-Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInterview');
 
-/*END*/
+
 
 /*ATUR ULANG INTERVIEW*/
 Route::post('atur-ulang','AturUlangController@PostAturUlang');
@@ -150,12 +145,19 @@ Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
 /*END*/
 
 /*PELAMAR PERUSAHAAN*/
-Route::post('pelamar-perusahaan/{id}','PelamarPerusahaanController@PostPelamarPerusahaan');
-Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
-Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
-Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
+
 
 /*END*/
 
 });
+/*UNDANGAN INTERVIEW*/
+Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInterview');
 
+/* KIRIM UNDANGAN */
+Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
+/*END*/
+/*END*/
+Route::post('pelamar-perusahaan/','PelamarPerusahaanController@PostPelamarPerusahaan');
+Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
+Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
+Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
