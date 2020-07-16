@@ -113,10 +113,6 @@ Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 
 /*END*/
 
-
-
-
-
 /*ATUR ULANG INTERVIEW*/
 Route::post('atur-ulang','AturUlangController@PostAturUlang');
 
@@ -148,8 +144,6 @@ Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
 
 
 /*END*/
-
-});
 /*UNDANGAN INTERVIEW*/
 Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInterview');
 
@@ -161,3 +155,25 @@ Route::post('pelamar-perusahaan/','PelamarPerusahaanController@PostPelamarPerusa
 Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
 Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
 Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
+
+/*DATA PIC PERUSAHAAN*/
+Route::post('pic-perusahaan/{idperusahaan}','PelamarPerusahaanController@PostPelamarPerusahaan');
+Route::get('pic-perusahaan/{idperusahaan}','PelamarPerusahaanController@GetPelamarPerusahaan');
+Route::put('pic-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
+/* END*/
+
+/*ADMIN */
+Route::post('admin-verifikasi/{idperusahaan}','AdminConfig@UpdateStatusUserPerusahaan');
+Route::post('admin-getallperusahaan/{idperusahaan}','AdminConfig@GetAllUserPerusahaan');
+Route::post('admin-getperusahaanbyid/{idperusahaan}','AdminConfig@GetUserPerusahaanById');
+Route::post('admin-getallkandidat/{idperusahaan}','AdminConfig@GetAllUserKandidat');
+Route::post('admin-getkandidatbyid/{idperusahaan}','AdminConfig@GetUserKandidatById');
+Route::post('admin-updatestatuskandidat/{idperusahaan}','AdminConfig@UpdateStatusUserKandidat');
+Route::post('admin-getalliklan/{idperusahaan}','AdminConfig@GetAllIklan');
+Route::post('admin-updateiklan/{idperusahaan}','AdminConfig@UpdateIklan');
+Route::post('admin-deleteiklan/{idperusahaan}','AdminConfig@DeleteIklanPerusahaan');
+Route::post('admin-updatestatusiklan/{idperusahaan}','AdminConfig@UpdateStatusIklan');
+
+/* END*/
+
+});

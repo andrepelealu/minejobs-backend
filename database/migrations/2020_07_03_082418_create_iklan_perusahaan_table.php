@@ -27,6 +27,7 @@ class CreateIklanPerusahaanTable extends Migration {
 			$table->string('persyaratan');
 			$table->string('benefit_perusahaan');
 			$table->string('url_header');
+			$table->int('status_iklan')->default(0);
 		});
 	}
 

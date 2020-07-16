@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use App\UserPerusahaan;
+// use App\UserAdmin;
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Validator;
@@ -15,7 +15,7 @@ use JWTFactory;
 use JWTAuth;
 use JWTAuthException;
 use Mail,DB;
-use App\UserPerusahaan;
+use App\UserAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Password;
@@ -24,7 +24,7 @@ use Laravel\Socialite\Facades\Socialite;
 // use Illuminate\Mail\Mailer;
 
 
-class UserPerusahaanController extends Controller
+class UserAdminController extends Controller
 {
     // public function __construct()
     // {
@@ -42,7 +42,7 @@ class UserPerusahaanController extends Controller
     
     public function recover(Request $request)
     {
-        $user = UserPerusahaan::where('email', $request->email)->first();
+        $user = UserAdmin::where('email', $request->email)->first();
         if (!$user) {
             $error_message = "Your email address was not found.";
             return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
@@ -68,7 +68,7 @@ class UserPerusahaanController extends Controller
         $check = DB::table('user_kandidat_verification')->where('token',$verification_code)->first();
 
         if(!is_null($check)){
-            $user = UserPerusahaan::find($check->id_kandidat);
+            $user = UserAdmin::find($check->id_kandidat);
 
             if($user->status_akun == 1){
                 return response()->json([
@@ -100,8 +100,8 @@ class UserPerusahaanController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        \Config::set('jwt.user', 'App\UserPerusahaan'); 
-		\Config::set('auth.providers.users.model', \App\UserPerusahaan::class);
+        \Config::set('jwt.user', 'App\UserAdmin'); 
+		\Config::set('auth.providers.users.model', \App\UserAdmin::class);
 		$credentials = $request->only('email', 'password');
         $token = null;
         
@@ -113,8 +113,8 @@ class UserPerusahaanController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         $res['status'] = 200;
-        $res['messages'] = 'this token has special treatment [code:1]';
-        $res['token'] = $token.rand(0, 9);
+        $res['messages'] = 'this token has special treatment [code:2]';
+        $res['token'] = $token.rand(0, 9).rand(0,9);
         // $res['real_token'] = substr($res['token'], 0, -1);
         
         return response()->json($res);
@@ -133,7 +133,7 @@ class UserPerusahaanController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $user = UserPerusahaan::create([
+        $user = UserAdmin::create([
             // 'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password'))
@@ -142,7 +142,7 @@ class UserPerusahaanController extends Controller
         $verification_code = str_random(30); //Generate verification code
         DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
 
-        $subject = "Minejobs | Verifikasi Email Anda";
+        $subject = "Minejobs Admin | Verifikasi Email Anda";
         Mail::send('email.verify', ['verification_code' => $verification_code],
             function($mail) use ($email, $subject){
                 $mail->from('donotreply@minejobs.id');
@@ -152,9 +152,9 @@ class UserPerusahaanController extends Controller
 
         $token = JWTAuth::fromUser($user);
         $res['status'] = 200;
-        $res['messages'] = 'this token has special treatment [code:1]';
+        $res['messages'] = 'this token has special treatment [code:2]';
         $res['user'] = $user;
-        $res['token'] = $token.rand(0, 9);
+        $res['token'] = $token.rand(0, 9).rand(0,9);
         // $res['real_token'] = substr($res['token'], 0, -1);
         return response()->json($res);
         // return response()->json(compact('user','token'),201);
@@ -211,8 +211,8 @@ class UserPerusahaanController extends Controller
         );
         $token = JWTAuth::fromUser($authUser);
         $res['status'] = 200;
-        $res['messages'] = 'this token has special treatment [code:1]';
-        $res['token'] = $token.rand(0, 9);
+        $res['messages'] = 'this token has special treatment [code:2]';
+        $res['token'] = $token.rand(0, 9).rand(0,9);
         // $res['real_token'] = substr($res['token'], 0, -1);
         $res['user'] = $user;
         return response()->json($res);
@@ -223,12 +223,12 @@ class UserPerusahaanController extends Controller
 
     public function findOrCreateUser($user, $provider)
     {
-        $authUser = UserPerusahaan::where('email', $user->email)->first();
+        $authUser = UserAdmin::where('email', $user->email)->first();
         if ($authUser) {
             return $authUser;
         }
         else{
-            $data = UserPerusahaan::create([
+            $data = UserAdmin::create([
                 'email'    => !empty($user->email)? $user->email : '' ,
                 'socialite_provider' => $provider,
                 'socialite_id' => $user->id,

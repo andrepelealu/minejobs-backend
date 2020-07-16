@@ -77,8 +77,12 @@ class IklanPerusahaanController extends Controller
         public function GetIklanPerusahaanByLokasi(Request $req){
             $provinsi= $req->provinsi;
             $kota= $req->kota;
-            $kota_      = Iklan_Perusahaan::where('kota',$kota)->get();
-            $provinsi_= Iklan_Perusahaan::where('provinsi',$provinsi)->get();
+            $kota_      = Iklan_Perusahaan::where('kota',$kota)
+            ->where('status_iklan','=',1)
+            ->get();
+            $provinsi_= Iklan_Perusahaan::where('provinsi',$provinsi)
+            ->where('status_iklan','=',1)
+            ->get();
             
             if(count($kota_)>0) {
                 $res['count'] = count($kota_);
@@ -97,7 +101,9 @@ class IklanPerusahaanController extends Controller
             }
         }
         public function GetIklanPerusahaanByGaji($gaji){
-            $data = Iklan_Perusahaan::where('gaji_min','>=',$gaji)->get();
+            $data = Iklan_Perusahaan::where('gaji_min','>=',$gaji)
+            ->where('status_iklan','=',1)
+            ->get();
             if(count($data)>0){
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';
@@ -110,7 +116,9 @@ class IklanPerusahaanController extends Controller
             }
         }
         public function GetIklanPerusahaanByBidang($bidang){
-            $data = Iklan_Perusahaan::where('bidang_pekerjaan','>=',$bidang)->get();
+            $data = Iklan_Perusahaan::where('bidang_pekerjaan','>=',$bidang)
+            ->where('status_iklan','=',1)
+            ->get();
             if(count($data)>0){
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';
@@ -123,7 +131,7 @@ class IklanPerusahaanController extends Controller
             }
         }
         public function GetIklanPerusahaan(){
-            $data = Iklan_Perusahaan::all();
+            $data = Iklan_Perusahaan::all()->where('status_iklan','=',1)->get();
             if(count($data)>0){
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';
@@ -144,6 +152,7 @@ class IklanPerusahaanController extends Controller
                     ->join('profile_perusahaan',function($join) use($cari){
                         $join->on('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
                             ->where('iklan_perusahaan.posisi_pekerjaan','like','%'.$cari.'%')
+                            ->where('status_iklan','=',1)
                             ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan');
                     })
                     ->get();
@@ -173,7 +182,7 @@ class IklanPerusahaanController extends Controller
             
         public function UpdateIklanPerusahaan(Request $req , $id){
 
-        $data = IklanPerusahaanModel::find($id,'id_perusahaan')->first();
+        $data = Iklan_Perusahaan::find($id,'id_perusahaan')->first();
         // $data->id_perusahaan = $req->id_perusahaan;
         $data->id_perusahaan = $req->id_perusahaan;
         $data->posisi_pekerjaan = $req->posisi_pekerjaan;
@@ -204,22 +213,5 @@ class IklanPerusahaanController extends Controller
         }
 
     }
-    public function DeleteIklanPerusahaan(){
-        $data = IklanPerusahaanModel::find($id,'id_perusahaan')->first();
-        if(count($data)>0){
-            if($data->delete()){
-                $res['message'] = 'Berhasil Dihapus';
-                $res['data'] = $data;
-                return $res;
-            }else{
-                $res['message'] = 'Gagal Dihapus';
-                $res['data'] = $data;
-                return $res;
-            }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }       
-    } //
+
 }
