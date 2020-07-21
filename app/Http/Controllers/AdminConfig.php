@@ -9,10 +9,103 @@ use App\Iklan_Perusahaan;
 use App\PicPerusahaan;
 use App\DataPribadiModel;
 use App\ProfilPerusahaan;
+use App\AddAdmin;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use Validator;
+use JWTFactory;
+use JWTAuth;
+use JWTAuthException;
+use Mail,DB;
+use App\UserAdmin;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Password;
 
 class AdminConfig extends Controller
 {
 
+    public function InviteAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:user_admin_verification'
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        // $user = AddAdmin::create([
+        //     // 'name' => $request->get('name'),
+        //     'email' => $request->get('email'),
+        // ]);
+        $email = $request->email;
+        $verification_code = str_random(30); //Generate verification code
+        DB::table('user_admin_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
+        $role = 'admin';
+        $subject = "Minejobs | Undangan Admin";
+        Mail::send('email.admin_invite', ['verification_code' => $verification_code, 'user'=>$role],
+            function($mail) use ($email, $subject){
+                $mail->from('donotreply@minejobs.id');
+                $mail->to($email);
+                $mail->subject($subject);
+            });
+
+  
+    }
+    public function VerifyAdmin(Request $req, $verification_code)
+    {
+        $check = DB::table('user_admin_verification')->where('token',$verification_code)->first();
+        $check_email = DB::table('user_admin_verification')->where('email',$req->email)->first();
+
+        if(!is_null($check && $check_email)){
+            $user = UserAdmin::find($check->id_kandidat);
+
+            if($user == 1){
+                
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|string|email|max:255|unique:user_admin',
+                    'password' => 'required|string|min:6|confirmed',
+                ]);
+
+                if($validator->fails()){
+                    return response()->json($validator->errors()->toJson(), 400);
+                }
+
+                $user = UserAdmin::create([
+                    // 'name' => $request->get('name'),
+                    'email' => $request->get('email'),
+                    'password' => Hash::make($request->get('password'))
+                ]);
+                DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
+                $token = JWTAuth::fromUser($user);
+                $res['status'] = 200;
+                $res['messages'] = 'this token has special treatment [code:2]';
+                $res['user'] = $user;
+                $res['token'] = $token.rand(0, 9).rand(0,9);
+                // $res['real_token'] = substr($res['token'], 0, -1);
+                return response()->json($res);
+                // return response()->json(compact('user','token'),201);
+
+            }
+            
+            // if($user->update(['status_akun' => 1])){
+            //     return response()->json([
+            //         'success'=> true,
+            //         'message'=> 'You have successfully verified your email address.'
+            //     ]);
+            // }else{
+            //     return response()->json([
+            //         'success'=> true,
+            //         'message'=> 'Fail'
+            //     ]);
+            // }
+           
+        }
+
+        return response()->json(['success'=> false, 'error'=> "Verification code is invalid or email not match with token"]);
+
+    }
     public function UpdateStatusUserPerusahaan(Request $idPerusahaan)
     {
         # update status 0= belum verifikasi,  1 = terverifikasi email ,3 = verifikasi admin, 5 = dibatasi

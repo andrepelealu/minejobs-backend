@@ -19,7 +19,10 @@ class CreateUserPerusahaanTable extends Migration {
 			$table->string('socialite_provider')->nullable();
 			$table->string('email');
 			$table->string('password')->nullable();
-			$table->int('status_akun')->default(0);
+			$table->string('remember_token')->nullable();
+
+			$table->integer('status_akun')->default(0);
+			
 		});
 	}
 

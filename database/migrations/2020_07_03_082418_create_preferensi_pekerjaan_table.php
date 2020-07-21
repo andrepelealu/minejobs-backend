@@ -19,7 +19,7 @@ class CreatePreferensiPekerjaanTable extends Migration {
 			$table->integer('gaji_diharapkan');
 			$table->string('provinsi');
 			$table->string('kota');
-			$table->integer('bidang_pekerjaan');
+			$table->string('bidang_pekerjaan');
 		});
 	}
 

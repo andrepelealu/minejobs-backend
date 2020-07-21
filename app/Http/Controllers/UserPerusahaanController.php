@@ -31,18 +31,26 @@ class UserPerusahaanController extends Controller
     //     $this->user = new User;
     // }
     public function logout(Request $request){
+        
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
+
         try{
             $this->validate($request,['token'=> 'required']);
             JWTAuth::invalidate($request->input('token'));
             return response()->json(['sukses' => true,'pesan'=>'Berhasil Log Out']);
         }catch(\Exception $e){
-            return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout'], $e->getStatusCode());
+            return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout']);
         }
     }
     
     public function recover(Request $request)
     {
-        $user = UserPerusahaan::where('email', $request->email)->first();
+        
+        \Config::set('auth.providers', ['perusahaan' => [
+            'driver' => 'eloquent',
+            'model' => UserPerusahaan::class,
+        ]]);
+        $user = UserKandidat::where('email', $request->email)->first();
         if (!$user) {
             $error_message = "Your email address was not found.";
             return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
@@ -65,7 +73,7 @@ class UserPerusahaanController extends Controller
     }
     public function verifyUser($verification_code)
     {
-        $check = DB::table('user_kandidat_verification')->where('token',$verification_code)->first();
+        $check = DB::table('user_perusahaan_verification')->where('token',$verification_code)->first();
 
         if(!is_null($check)){
             $user = UserPerusahaan::find($check->id_kandidat);
@@ -76,9 +84,10 @@ class UserPerusahaanController extends Controller
                     'message'=> 'Account already verified..'
                 ]);
             }
-
-            DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
-            if($user->update(['status_akun' => 1])){
+            $user->status_akun = 1;
+            $update= $user->save();
+            DB::table('user_perusahaan_verification')->where('token',$verification_code)->delete();
+            if($update){
                 return response()->json([
                     'success'=> true,
                     'message'=> 'You have successfully verified your email address.'
@@ -99,9 +108,9 @@ class UserPerusahaanController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
-        \Config::set('jwt.user', 'App\UserPerusahaan'); 
-		\Config::set('auth.providers.users.model', \App\UserPerusahaan::class);
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
+        // \Config::set('jwt.user', 'App\UserPerusahaan'); 
+		// \Config::set('auth.providers.users.model', \App\UserPerusahaan::class);
 		$credentials = $request->only('email', 'password');
         $token = null;
         
@@ -123,9 +132,17 @@ class UserPerusahaanController extends Controller
 
     public function register(Request $request)
     {
+        $check = DB::table('user_perusahaan')->where('email',$request->email)->first();
 
+        if(!is_null($check)){
+            return response()->json([
+                'status'=> false,
+                'message'=> 'Account already registered..'
+            ]);
+        }
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:user_kandidat',
+            'email' => 'required|string|email|max:255|unique:user_perusahaan',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -140,10 +157,10 @@ class UserPerusahaanController extends Controller
         ]);
         $email = $request->email;
         $verification_code = str_random(30); //Generate verification code
-        DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
-
+        DB::table('user_perusahaan_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
+        $role = 'perusahaan';
         $subject = "Minejobs | Verifikasi Email Anda";
-        Mail::send('email.verify', ['verification_code' => $verification_code],
+        Mail::send('email.verify', ['verification_code' => $verification_code, 'user'=> $role],
             function($mail) use ($email, $subject){
                 $mail->from('donotreply@minejobs.id');
                 $mail->to($email);
@@ -198,17 +215,16 @@ class UserPerusahaanController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback($provider,$role)
     {
+
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
         $user = Socialite::driver($provider)->stateless()->user();
         $email = $user->email;
         $authUser = $this->findOrCreateUser($user, $provider);
-        Auth::login($authUser, true);
+        // Auth::login($authUser, true);
         // $token = JWTAuth::fromUser($user);
-        $dummyuser = array(
-            'email'=>$user->email,
-            'remember_token'=>$user->token
-        );
+
         $token = JWTAuth::fromUser($authUser);
         $res['status'] = 200;
         $res['messages'] = 'this token has special treatment [code:1]';

@@ -13,26 +13,41 @@ use Illuminate\Http\Request;
 |
 */
 
-/*LOGIN REGISTER KANDIDAT*/
-Route::post('kandidat/register', 'UserKandidatController@register');
-Route::post('kandidat/login', 'UserKandidatController@login');
-Route::post('kandidat/logout', 'UserKandidatController@logout');
-Route::post('kandidat/recover', 'UserKandidatController@recover');
-Route::get('kandidat/getuser', 'UserKandidatController@getAuthenticatedUser');
+// Route::group(['namespace' => 'kandidat', 'middleware' => ['jwt.verify'], 'prefix' => 'kandidat'], function () {
+
+// });
+
+
 
 Route::group(['middleware' => ['web']], function () {
 	Route::get('kandidat/auth/{provider}', 'UserKandidatController@redirectToProvider');
 	Route::get('perusahaan/auth/{provider}', 'UserPerusahaanController@redirectToProvider');
-	Route::get('auth/{provider}/callback', 'UserPerusahaanController@handleProviderCallback');
+	Route::get('auth/{provider}/{user}', 'UserPerusahaanController@handleProviderCallback');
+	// Route::get('auth/{provider}/callback', 'UserPerusahaanController@handleProviderCallback');
+
 });
 
-/*END LOGIN REGISTER */
-/*LOGIN REGISTER KANDIDAT*/
-Route::post('perusahaan/register', 'UserPerusahaanController@register');
-Route::post('perusahaan/login', 'UserPerusahaanController@login');
-Route::post('perusahaan/logout', 'UserPerusahaanController@logout');
 
+/*LOGIN REGISTER KANDIDAT*/
+Route::post('kandidat/register', 'UserKandidatController@register'); //checked
+Route::post('kandidat/login', 'UserKandidatController@login'); //checked
+Route::post('kandidat/forgot', 'ForgotPasswordKandidatController@sendResetLinkEmail');
+Route::post('kandidat/reset', 'ResetPasswordKandidatController@reset');
+Route::get('kandidat/getuser', 'UserKandidatController@getAuthenticatedUser');
 /*END LOGIN REGISTER */
+
+/*LOGIN REGISTER KANDIDAT*/
+Route::post('perusahaan/register', 'UserPerusahaanController@register');//checked
+Route::post('perusahaan/login', 'UserPerusahaanController@login');//checked
+Route::post('perusahaan/forgot', 'ForgotPasswordPerusahaanController@sendResetLinkEmail');
+Route::post('perusahan/reset', 'ResetPasswordPerusahaanController@reset');
+/*END LOGIN REGISTER */
+
+Route::post('admin/login', 'UserAdminController@login');
+Route::post('admin/add','AdminConfig@InviteAdmin');
+Route::post('admin/verify','AdminConfig@VerifyAdmin');
+Route::post('admin/forgot', 'ForgotPasswordAdminController@sendResetLinkEmail');
+Route::post('admin/reset', 'ResetPasswordAdminController@reset');
 
 /*LAMARAN TERSIMPAN*/
 //Here is the protected User Routes Group,  
@@ -41,19 +56,24 @@ Route::post('perusahaan/logout', 'UserPerusahaanController@logout');
 //     Route::get('dashboard', 'Api\User\UserController@dashboard');
 // });
 Route::middleware(['jwt.verify','jwt.auth'])->group(function () {
+
+Route::post('kandidat/logout', 'UserKandidatController@logout'); //checked
+Route::post('admin/logout', 'UserAdminController@logout');
+Route::post('perusahaan/logout', 'UserPerusahaanController@logout');
 	/* DATA PRIBADI */
 
-Route::post('data-pribadi','DataPribadiController@PostDataPribadi');
-Route::get('data-pribadi','DataPribadiController@GetDataPribadi')->middleware('jwt.verify');
-Route::get('data-pribadi/{id}','DataPribadiController@GetDataPribadiById');
-Route::put('data-pribadi/{id}','DataPribadiController@UpdateDataPribadi');
+
+Route::post('data-pribadi'		,'DataPribadiController@PostDataPribadi');//checked
+Route::get('data-pribadi'		,'DataPribadiController@GetDataPribadi');//checked
+Route::get('data-pribadi/{id}'	,'DataPribadiController@GetDataPribadiById');//checked
+Route::put('data-pribadi/{id}'	,'DataPribadiController@UpdateDataPribadi');//checked
 // Route::delete('data-pribadi','DataPribadiController@DeleteDataPribadi');
 /* END DATA PRIBADI */
 /* PREFERENSI PEKERJAAN */
-Route::post('preferensi-pekerjaan','PreferensiPekerjaanController@PostPreferensiPekerjaan');
-Route::get('preferensi-pekerjaan/{$id}','PreferensiPekerjaanController@GetPreferensiPekerjaan');
-Route::put('preferensi-pekerjaan/{$id}','PreferensiPekerjaanController@UpdatePreferensiPekerjaan');
-Route::delete('preferensi-pekerjaan/{$id}','PreferensiPekerjaanController@DeletePreferensiPekerjaan');
+Route::post('preferensi-pekerjaan'			,'PreferensiPekerjaanController@PostPreferensiPekerjaan');//checked
+Route::get('preferensi-pekerjaan/{$id}'		,'PreferensiPekerjaanController@GetPreferensiPekerjaan');
+Route::put('preferensi-pekerjaan/{$id}'		,'PreferensiPekerjaanController@UpdatePreferensiPekerjaan');
+Route::delete('preferensi-pekerjaan/{$id}'	,'PreferensiPekerjaanController@DeletePreferensiPekerjaan');
 /* END PREFERENSI PEKERJAAN */
 
 /* PENGALAMAN */
@@ -93,7 +113,7 @@ Route::delete('uploadcv/{$id}','UploadCvController@DeleteCv');
 
 /*LAMARAN Terkirim*/
 
-Route::get('lamaran-terkirim/{$id}','LamaranTerkirim@GetLamaranTerkirim');
+Route::get('lamaran-terkirim/{$id}','LamaranTerkirimController@GetLamaranTerkirim');
 
 /*END*/
 
@@ -107,7 +127,7 @@ Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan'
 /*LAMARAN JADWAL INTERVIEW*/
 
 Route::get('jadwal-interview/{id}','JadwalInterviewController@GetJadwalInterview');
-Route::get('jadwal-perusahaan/{id}','GetJadwalController@GetJadwalPerusahaan');
+Route::get('jadwal-perusahaan/{id}','JadwalInterviewController@GetJadwalPerusahaan');
 Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 
 
@@ -164,15 +184,15 @@ Route::put('pic-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusa
 
 /*ADMIN */
 Route::post('admin-verifikasi/{idperusahaan}','AdminConfig@UpdateStatusUserPerusahaan');
-Route::post('admin-getallperusahaan/{idperusahaan}','AdminConfig@GetAllUserPerusahaan');
-Route::post('admin-getperusahaanbyid/{idperusahaan}','AdminConfig@GetUserPerusahaanById');
-Route::post('admin-getallkandidat/{idperusahaan}','AdminConfig@GetAllUserKandidat');
-Route::post('admin-getkandidatbyid/{idperusahaan}','AdminConfig@GetUserKandidatById');
-Route::post('admin-updatestatuskandidat/{idperusahaan}','AdminConfig@UpdateStatusUserKandidat');
-Route::post('admin-getalliklan/{idperusahaan}','AdminConfig@GetAllIklan');
-Route::post('admin-updateiklan/{idperusahaan}','AdminConfig@UpdateIklan');
-Route::post('admin-deleteiklan/{idperusahaan}','AdminConfig@DeleteIklanPerusahaan');
-Route::post('admin-updatestatusiklan/{idperusahaan}','AdminConfig@UpdateStatusIklan');
+Route::get('admin-getallperusahaan/{idperusahaan}','AdminConfig@GetAllUserPerusahaan');
+Route::get('admin-getperusahaanbyid/{idperusahaan}','AdminConfig@GetUserPerusahaanById');
+Route::get('admin-getallkandidat/{idperusahaan}','AdminConfig@GetAllUserKandidat');
+Route::get('admin-getkandidatbyid/{idperusahaan}','AdminConfig@GetUserKandidatById');
+Route::put('admin-updatestatuskandidat/{idperusahaan}','AdminConfig@UpdateStatusUserKandidat');
+Route::get('admin-getalliklan/{idperusahaan}','AdminConfig@GetAllIklan');
+Route::put('admin-updateiklan/{idperusahaan}','AdminConfig@UpdateIklan');
+Route::delete('admin-deleteiklan/{idperusahaan}','AdminConfig@DeleteIklanPerusahaan');
+Route::put('admin-updatestatusiklan/{idperusahaan}','AdminConfig@UpdateStatusIklan');
 
 /* END*/
 

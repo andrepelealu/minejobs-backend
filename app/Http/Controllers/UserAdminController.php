@@ -31,6 +31,10 @@ class UserAdminController extends Controller
     //     $this->user = new User;
     // }
     public function logout(Request $request){
+        \Config::set('auth.providers', ['admin' => [
+            'driver' => 'eloquent',
+            'model' => UserAdmin::class,
+        ]]);
         try{
             $this->validate($request,['token'=> 'required']);
             JWTAuth::invalidate($request->input('token'));
@@ -42,7 +46,12 @@ class UserAdminController extends Controller
     
     public function recover(Request $request)
     {
-        $user = UserAdmin::where('email', $request->email)->first();
+       
+        \Config::set('auth.providers', ['admin' => [
+            'driver' => 'eloquent',
+            'model' => UserAdmin::class,
+        ]]);
+        $user = UserKandidat::where('email', $request->email)->first();
         if (!$user) {
             $error_message = "Your email address was not found.";
             return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
@@ -70,13 +79,13 @@ class UserAdminController extends Controller
         if(!is_null($check)){
             $user = UserAdmin::find($check->id_kandidat);
 
-            if($user->status_akun == 1){
+            if($user->status_akun = 1){
                 return response()->json([
                     'success'=> true,
                     'message'=> 'Account already verified..'
                 ]);
             }
-
+            
             DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
             if($user->update(['status_akun' => 1])){
                 return response()->json([
@@ -141,9 +150,9 @@ class UserAdminController extends Controller
         $email = $request->email;
         $verification_code = str_random(30); //Generate verification code
         DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
-
+        $role = 'admin';
         $subject = "Minejobs Admin | Verifikasi Email Anda";
-        Mail::send('email.verify', ['verification_code' => $verification_code],
+        Mail::send('email.verify', ['verification_code' => $verification_code,'user'=>$role],
             function($mail) use ($email, $subject){
                 $mail->from('donotreply@minejobs.id');
                 $mail->to($email);

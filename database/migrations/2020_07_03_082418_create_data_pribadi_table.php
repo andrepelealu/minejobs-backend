@@ -18,11 +18,11 @@ class CreateDataPribadiTable extends Migration {
 			$table->integer('id_kandidat')->index('data_pribadi_fk0');
 			$table->string('nama_depan');
 			$table->string('nama_belakang');
-			// $table->string('nomor_telepon');
-			// $table->string('provinsi');
-			// $table->string('kota');
-			// $table->string('tentang');
-			// $table->string('foto_profile');
+			$table->string('nomor_telepon');
+			$table->string('provinsi');
+			$table->string('kota');
+			$table->string('tentang');
+			$table->string('foto_profile');
 		});
 	}
 

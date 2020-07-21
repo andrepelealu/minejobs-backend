@@ -45,6 +45,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'perusahaan'
         ],
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admin'
+        ],
     ],
 
     /*
@@ -73,6 +77,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\UserPerusahaan::class,
         ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\UserAdmin::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -96,8 +104,18 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'kandidat' => [
+            'provider' => 'kandidat',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'perusahaan' => [
+            'provider' => 'perusahaan',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'admin' => [
+            'provider' => 'admin',
             'table' => 'password_resets',
             'expire' => 60,
         ],

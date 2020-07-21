@@ -16,6 +16,8 @@ use JWTAuth;
 use JWTAuthException;
 use Mail,DB;
 use App\UserKandidat;
+use App\KandidatVerification;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Password;
@@ -30,18 +32,46 @@ class UserKandidatController extends Controller
     // {
     //     $this->user = new User;
     // }
+    // protected function guard()
+    // {
+    //     return Auth::guard('kandidat');
+    // }
+    // protected function broker()
+    // {
+    //     return Password::broker('kandidat');
+    // }
     public function logout(Request $request){
+        config()->set( 'auth.defaults.guard', 'kandidat' );
+        \Config::set('auth.providers', ['kandidat' => [
+            'driver' => 'eloquent',
+            'model' => UserKandidat::class,
+        ]]);
         try{
             $this->validate($request,['token'=> 'required']);
             JWTAuth::invalidate($request->input('token'));
             return response()->json(['sukses' => true,'pesan'=>'Berhasil Log Out']);
         }catch(\Exception $e){
-            return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout'], $e->getStatusCode());
+            return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout']);
         }
+        // try{
+        //     $this->validate($request,['token'=> 'required']);
+        //     JWTAuth::invalidate($request->input('token'));
+        // }catch(\Exception $e){
+        //     return response()->json(['sukses'=>false, 'pesan'=>'Gagal Logout']);
+        // }
     }
     
     public function recover(Request $request)
     {
+        // \Config::set('jwt.user', 'App\UserKandidat'); 
+        // \Config::set('auth.providers.users.model', \App\UserKandidat::class);
+
+        // \Config::set('auth.providers', ['users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => UserKandidat::class,
+        // ]]);
+        Auth::guard('kandidat');
+        Password::broker('kandidat');
         $user = UserKandidat::where('email', $request->email)->first();
         if (!$user) {
             $error_message = "Your email address was not found.";
@@ -73,7 +103,7 @@ class UserKandidatController extends Controller
             if($user->status_akun == 1){
                 return response()->json([
                     'success'=> true,
-                    'message'=> 'Account already verified..'
+                    'message'=> 'user already verified'
                 ]);
             }
 
@@ -99,7 +129,7 @@ class UserKandidatController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+        config()->set( 'auth.defaults.guard', 'kandidat' );
         \Config::set('jwt.user', 'App\UserKandidat'); 
 		\Config::set('auth.providers.users.model', \App\UserKandidat::class);
 		$credentials = $request->only('email', 'password');
@@ -118,6 +148,14 @@ class UserKandidatController extends Controller
 
     public function register(Request $request)
     {
+        $check = DB::table('user_kandidat')->where('email',$request->email)->first();
+
+        if(!is_null($check)){
+            return response()->json([
+                'status'=> false,
+                'message'=> 'Account already registered..'
+            ]);
+        }
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:user_kandidat',
@@ -136,16 +174,16 @@ class UserKandidatController extends Controller
         $email = $request->email;
         $verification_code = str_random(30); //Generate verification code
         DB::table('user_kandidat_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
-
+        $role = 'user';
         $subject = "Minejobs | Verifikasi Email Anda";
-        Mail::send('email.verify', ['verification_code' => $verification_code],
+        Mail::send('email.verify', ['verification_code' => $verification_code, 'user'=>$role],
             function($mail) use ($email, $subject){
                 $mail->from('donotreply@minejobs.id');
                 $mail->to($email);
                 $mail->subject($subject);
             });
 
-        $token = JWTAuth::fromUser($user);
+        $token = JWTAuth::fromUser($user).rand(0, 9);
 
         return response()->json(compact('user','token'),201);
     }
@@ -190,6 +228,7 @@ class UserKandidatController extends Controller
      */
     public function handleProviderCallback($provider)
     {
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
         $user = Socialite::driver($provider)->stateless()->user();
         $email = $user->email;
         $authUser = $this->findOrCreateUser($user, $provider);
@@ -211,6 +250,7 @@ class UserKandidatController extends Controller
 
     public function findOrCreateUser($user, $provider)
     {
+        config()->set( 'auth.defaults.guard', 'perusahaan' );
         $authUser = UserKandidat::where('email', $user->email)->first();
         if ($authUser) {
             return $authUser;

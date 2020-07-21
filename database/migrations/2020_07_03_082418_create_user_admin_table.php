@@ -16,7 +16,9 @@ class CreateUserAdminTable extends Migration {
 		{
 			$table->integer('id')->primary();
 			$table->string('email');
-			$table->string('password', 1);
+			$table->string('password');
+			$table->string('remember_token')->nullable();
+
 			$table->timestamps();
 		});
 	}

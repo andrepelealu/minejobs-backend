@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\PreferensiPekerjaan;
+use Validator;
 
 use Illuminate\Http\Request;
 
@@ -60,8 +61,6 @@ class PreferensiPekerjaanController extends Controller
         // $data->id_kandidat = $req->id_kandidat;
         $data->id_kandidat = $req->id_kandidat;
         $data->gaji_diharapkan = $req->gaji_diharapkan;
-        $data->provinsi = $req->provinsi;
-        $data->kota = $req->kota;
         $data->provinsi = $req->provinsi;
         $data->kota = $req->kota;
         $data->bidang_pekerjaan = $req->bidang_pekerjaan;
