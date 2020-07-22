@@ -16,6 +16,7 @@ class CreateUserAdminVerificationTable extends Migration
         Schema::create('user_admin_verification', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_kandidat');
+            $table->string('email');
             $table->string('token');
 
         });

@@ -14,7 +14,7 @@ class CreateBahasaTable extends Migration {
 	{
 		Schema::create('bahasa', function(Blueprint $table)
 		{
-			$table->integer('id', true);
+			$table->increments('id', true);
 			$table->integer('id_kandidat')->index('bahasa_fk0');
 			$table->string('bahasa_dikuasai');
 			$table->string('kemampuan_verbal');

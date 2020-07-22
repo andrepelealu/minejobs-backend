@@ -31,10 +31,8 @@ class UserAdminController extends Controller
     //     $this->user = new User;
     // }
     public function logout(Request $request){
-        \Config::set('auth.providers', ['admin' => [
-            'driver' => 'eloquent',
-            'model' => UserAdmin::class,
-        ]]);
+        config()->set( 'auth.defaults.guard', 'admin' );
+
         try{
             $this->validate($request,['token'=> 'required']);
             JWTAuth::invalidate($request->input('token'));
@@ -109,8 +107,8 @@ class UserAdminController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        \Config::set('jwt.user', 'App\UserAdmin'); 
-		\Config::set('auth.providers.users.model', \App\UserAdmin::class);
+        config()->set( 'auth.defaults.guard', 'admin' );
+
 		$credentials = $request->only('email', 'password');
         $token = null;
         
@@ -123,9 +121,8 @@ class UserAdminController extends Controller
         }
         $res['status'] = 200;
         $res['messages'] = 'this token has special treatment [code:2]';
-        $res['token'] = $token.rand(0, 9).rand(0,9);
-        // $res['real_token'] = substr($res['token'], 0, -1);
-        
+        $res['user'] = auth()->user();
+        $res['token'] = $token.rand(0, 9).rand(0,9);        
         return response()->json($res);
 
     }

@@ -14,7 +14,7 @@ class CreatePelamarPerusahaanTable extends Migration {
 	{
 		Schema::create('pelamar_perusahaan', function(Blueprint $table)
 		{
-			$table->integer('id', true);
+			$table->increments('id', true);
 			$table->integer('id_kandidat')->index('pelamar_perusahaan_fk0');
 			$table->integer('id_iklan')->index('pelamar_perusahaan_fk1');
 			$table->integer('id_perusahaan')->index('pelamar_perusahaan_fk2');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Pendidikan;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Pengalaman;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 
@@ -12,12 +13,14 @@ class PengalamanController extends Controller
     // Route::put('pengalaman','PengalamanController@UpdatePengalaman');
     // Route::delete('pengalaman','PengalamanController@DeletePengalaman');
 
-    public function PostPengalaman(Request $id)
+    public function PostPengalaman(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'id_kandidat' => 'required|unique:pengalaman',
+            'id_kandidat' => 'required',
             'posisi_pekerjaan' => 'required|string',
             'nama_perusahaan' =>'required|string',
+            'bulan_mulai' =>'required|string',
+            'bulan_selesai'=>'required|string',
             'tahun_mulai' =>'required|string',
             'tahun_selesai'=>'required|string',
             'jabatan'=>'required|string',
@@ -32,12 +35,15 @@ class PengalamanController extends Controller
     $input->id_kandidat = $req->id_kandidat;
     $input->posisi_pekerjaan = $req->posisi_pekerjaan;
     $input->nama_perusahaan = $req->nama_perusahaan;
+    $input->bulan_mulai = $req->bulan_mulai;
+    $input->bulan_selesai = $req->bulan_selesai;
     $input->tahun_mulai = $req->tahun_mulai;
     $input->tahun_selesai = $req->tahun_selesai;
     $input->jabatan = $req->jabatan;
     $input->gaji = $req->gaji;
+    $input->deskripsi_pekerjaan = $req->deskripsi_pekerjaan;
     $input->save();
-
+    
     $res['message'] = 'berhasil post';
     $res['data'] = $input;
     return response()->json($res, 200);

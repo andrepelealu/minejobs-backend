@@ -42,10 +42,7 @@ class UserKandidatController extends Controller
     // }
     public function logout(Request $request){
         config()->set( 'auth.defaults.guard', 'kandidat' );
-        \Config::set('auth.providers', ['kandidat' => [
-            'driver' => 'eloquent',
-            'model' => UserKandidat::class,
-        ]]);
+
         try{
             $this->validate($request,['token'=> 'required']);
             JWTAuth::invalidate($request->input('token'));
@@ -143,7 +140,13 @@ class UserKandidatController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        return response()->json(compact('token'));
+        $res['status'] = 200;
+        $res['messages'] = 'Login Success';
+        $res['user'] = auth()->user();
+        $res['token'] = $token;        
+        return response()->json($res);
+
+        
     }
 
     public function register(Request $request)

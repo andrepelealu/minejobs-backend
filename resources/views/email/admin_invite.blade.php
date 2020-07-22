@@ -13,7 +13,7 @@
     Silahkan click link berikut untuk membuat akun
     <br>
 
-    <a href="secret.minejobs.id/add/admin/{{$verification_code}}">Buat Akun</a>
+    <a href="https://secret.minejobs.id/add/admin/{{$verification_code}}">Buat Akun</a>
 
     <br/>
 </div>

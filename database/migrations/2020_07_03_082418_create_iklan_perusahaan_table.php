@@ -14,7 +14,7 @@ class CreateIklanPerusahaanTable extends Migration {
 	{
 		Schema::create('iklan_perusahaan', function(Blueprint $table)
 		{
-			$table->integer('id', true);
+			$table->increments('id', true);
 			$table->integer('id_perusahaan')->index('iklan_perusahaan_fk0');
 			$table->string('posisi_pekerjaan');
 			$table->integer('gaji_min');

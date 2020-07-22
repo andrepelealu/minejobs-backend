@@ -41,7 +41,7 @@ class AdminConfig extends Controller
         // ]);
         $email = $request->email;
         $verification_code = str_random(30); //Generate verification code
-        DB::table('user_admin_verification')->insert(['id_kandidat'=>$user->id,'token'=>$verification_code]);
+        DB::table('user_admin_verification')->insert(['email'=>$email,'token'=>$verification_code]);
         $role = 'admin';
         $subject = "Minejobs | Undangan Admin";
         Mail::send('email.admin_invite', ['verification_code' => $verification_code, 'user'=>$role],
@@ -50,34 +50,39 @@ class AdminConfig extends Controller
                 $mail->to($email);
                 $mail->subject($subject);
             });
-
+            $res['status'] = true;
+            $res['message'] = 'Succes sending email verification';
+            $res['token'] = $verification_code;
+            return $res;
   
     }
-    public function VerifyAdmin(Request $req, $verification_code)
+    public function VerifyAdmin(Request $req)
     {
-        $check = DB::table('user_admin_verification')->where('token',$verification_code)->first();
-        $check_email = DB::table('user_admin_verification')->where('email',$req->email)->first();
+        $check = DB::table('user_admin_verification')->where('token',$req->token)->first();
+        // $check_email = DB::table('user_admin_verification')->where('email',$req->email)->first();
 
-        if(!is_null($check && $check_email)){
-            $user = UserAdmin::find($check->id_kandidat);
+        if(!is_null($check)){
+            // $user = UserAdmin::find($check->id_kandidat);
 
-            if($user == 1){
+            // if($user == 1){
                 
-                $validator = Validator::make($request->all(), [
-                    'email' => 'required|string|email|max:255|unique:user_admin',
+                $validator = Validator::make($req->all(), [
+                    // 'email' => 'required|string|email|max:255|unique:user_admin',
                     'password' => 'required|string|min:6|confirmed',
+                    'token'=> 'required|string'
                 ]);
 
                 if($validator->fails()){
                     return response()->json($validator->errors()->toJson(), 400);
                 }
+                $email = DB::table('user_admin_verification')->where('token',$req->token)->get('email');
 
                 $user = UserAdmin::create([
                     // 'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'password' => Hash::make($request->get('password'))
+                    'email' => $email[0]->email,
+                    'password' => Hash::make($req->get('password'))
                 ]);
-                DB::table('user_kandidat_verification')->where('token',$verification_code)->delete();
+                DB::table('user_admin_verification')->where('token',$req->token)->delete();
                 $token = JWTAuth::fromUser($user);
                 $res['status'] = 200;
                 $res['messages'] = 'this token has special treatment [code:2]';
@@ -87,7 +92,7 @@ class AdminConfig extends Controller
                 return response()->json($res);
                 // return response()->json(compact('user','token'),201);
 
-            }
+            // }
             
             // if($user->update(['status_akun' => 1])){
             //     return response()->json([
@@ -103,10 +108,10 @@ class AdminConfig extends Controller
            
         }
 
-        return response()->json(['success'=> false, 'error'=> "Verification code is invalid or email not match with token"]);
+        return response()->json(['status'=> false, 'error'=> "Verification code is invalid or email not match with token"]);
 
     }
-    public function UpdateStatusUserPerusahaan(Request $idPerusahaan)
+    public function UpdateStatusUserPerusahaan($idPerusahaan)
     {
         # update status 0= belum verifikasi,  1 = terverifikasi email ,3 = verifikasi admin, 5 = dibatasi
         $data = UserPerusahaan::find($idPerusahaan,'id')->first();
@@ -142,7 +147,7 @@ class AdminConfig extends Controller
             return $res;
         }
     }
-    public function GetUserPerusahaanById(Request $idPerusahaan)
+    public function GetUserPerusahaanById($idPerusahaan)
     {
         $data = ProfilPerusahaan::where('id_perusahaan',$id)->get();
         if(count($data)>0){
@@ -170,7 +175,7 @@ class AdminConfig extends Controller
             return $res;
         }
     }
-    public function GetUserKandidatById(Request $idUserKandidat)
+    public function GetUserKandidatById($idUserKandidat)
     {
         $data = DataPribadiModel::where('id_kandidat',$id)->get();
         if(count($data)>0){
@@ -184,7 +189,7 @@ class AdminConfig extends Controller
             return $res;
         }
     }
-    public function UpdateStatusUserKandidat(Request $idUserKandidat = null)
+    public function UpdateStatusUserKandidat($idUserKandidat)
     {
         # update status user kandidat : 0= unverif email, 1= verif email, 2=restricted
         $data = UserKandidat::find($idUserKandidat,'id')->first();
@@ -222,7 +227,7 @@ class AdminConfig extends Controller
             return $res;
         }
     }
-    public function UpdateIklan(Request $idIklan)
+    public function UpdateIklan($idIklan)
     {
         $data = Iklan_Perusahaan::find($idIklan,'id_perusahaan')->first();
         // $data->id_perusahaan = $req->id_perusahaan;

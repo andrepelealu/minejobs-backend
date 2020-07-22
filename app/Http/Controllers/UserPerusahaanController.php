@@ -123,9 +123,8 @@ class UserPerusahaanController extends Controller
         }
         $res['status'] = 200;
         $res['messages'] = 'this token has special treatment [code:1]';
-        $res['token'] = $token.rand(0, 9);
-        // $res['real_token'] = substr($res['token'], 0, -1);
-        
+        $res['user'] = auth()->user();
+        $res['token'] = $token.rand(0, 9);        
         return response()->json($res);
 
     }

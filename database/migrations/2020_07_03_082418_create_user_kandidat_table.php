@@ -14,7 +14,7 @@ class CreateUserKandidatTable extends Migration {
 	{
 		Schema::create('user_kandidat', function(Blueprint $table)
 		{
-			$table->integer('id', true);
+			$table->increments('id', true);
 			$table->string('socialite_id')->nullable();
 			$table->string('socialite_provider')->nullable();
 

@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Notifications\PasswordNotification;
+use App\Notifications\PasswordNotificationAdmin;
 
 class UserAdmin extends Authenticatable implements JWTSubject
 {
