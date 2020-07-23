@@ -280,9 +280,9 @@ class AdminConfig extends Controller
     }
     public function UpdateStatusIklan(Request $req , $id){
 
-        $data = Iklan_Perusahaan::find($id,'id_perusahaan')->first();
+        $data = Iklan_Perusahaan::find($id,'id')->first();
         // $data->id_perusahaan = $req->id_perusahaan;
-        $data->status_akun = $req->status_akun;
+        $data->status_iklan = 1;
             if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';

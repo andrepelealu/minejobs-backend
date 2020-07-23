@@ -16,5 +16,5 @@ class PreferensiPekerjaan extends Model
         'provinsi',
         'kota',
         'bidang_pekerjaan' 
-];
+    ];
 }

@@ -14,7 +14,7 @@ class CreatePengalamanTable extends Migration {
 	{
 		Schema::create('pengalaman', function(Blueprint $table)
 		{
-			$table->increments('id', true);
+			$table->integer('id', true);
 			$table->integer('id_kandidat')->index('pengalaman_fk0');
 			$table->string('posisi_pekerjaan');
 			$table->string('nama_perusahaan');

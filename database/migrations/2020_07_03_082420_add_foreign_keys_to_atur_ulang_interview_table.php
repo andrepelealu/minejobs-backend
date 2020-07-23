@@ -15,8 +15,8 @@ class AddForeignKeysToAturUlangInterviewTable extends Migration {
 		Schema::table('atur_ulang_interview', function(Blueprint $table)
 		{
 			$table->foreign('id_undangan_interview', 'atur_ulang_interview_fk0')->references('id')->on('undangan_interview')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('id_kandidat', 'atur_ulang_interview_fk1')->references('id')->on('undangan_interview')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-			$table->foreign('id_perusahaan', 'atur_ulang_interview_fk2')->references('id')->on('undangan_interview')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('id_kandidat', 'atur_ulang_interview_fk1')->references('id')->on('user_kandidat')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+			$table->foreign('id_perusahaan', 'atur_ulang_interview_fk2')->references('id')->on('user_perusahaan')->onUpdate('RESTRICT')->onDelete('RESTRICT');
 		});
 	}
 

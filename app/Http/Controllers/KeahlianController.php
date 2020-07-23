@@ -16,7 +16,7 @@ class KeahlianController extends Controller
     public function PostKeahlian(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'id_kandidat' => 'required|unique:keahlian',
+            'id_kandidat' => 'required',
             'nama_keahlian' => 'required|string',
             'tingkatan' =>'required|string',
         ]

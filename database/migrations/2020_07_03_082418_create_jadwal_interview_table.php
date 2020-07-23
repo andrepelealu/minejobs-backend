@@ -14,7 +14,7 @@ class CreateJadwalInterviewTable extends Migration {
 	{
 		Schema::create('jadwal_interview', function(Blueprint $table)
 		{
-			$table->increments('id', true);
+			$table->integer('id', true);
 			$table->integer('id_undangan_interview')->index('jadwal_interview_fk0');
 			$table->integer('id_kandidat')->index('jadwal_interview_fk1');
 			$table->integer('id_perusahaan')->index('jadwal_interview_fk2');

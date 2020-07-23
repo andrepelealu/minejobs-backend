@@ -64,17 +64,21 @@ class PengalamanController extends Controller
         }
     }
 
-    public function UpdatePengalaman(Request $req, $id)
+    public function UpdatePengalaman(Request $req , $id)
     {
         $data = Pengalaman::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
         $data->id_kandidat = $req->id_kandidat;
         $data->posisi_pekerjaan = $req->posisi_pekerjaan;
         $data->nama_perusahaan = $req->nama_perusahaan;
+        $data->bulan_mulai = $req->bulan_mulai;
+        $data->bulan_selesai = $req->tahun_selesai;
         $data->tahun_mulai = $req->tahun_mulai;
         $data->tahun_selesai = $req->tahun_selesai;
         $data->jabatan = $req->jabatan;
         $data->gaji = $req->gaji;
+        $data->deskripsi_pekerjaan = $req->deskripsi_pekerjaan;
+
         if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';

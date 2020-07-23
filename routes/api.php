@@ -71,53 +71,53 @@ Route::put('data-pribadi/{id}'	,'DataPribadiController@UpdateDataPribadi');//che
 /* END DATA PRIBADI */
 /* PREFERENSI PEKERJAAN */
 Route::post('preferensi-pekerjaan'			,'PreferensiPekerjaanController@PostPreferensiPekerjaan');//checked
-Route::get('preferensi-pekerjaan/{$id}'		,'PreferensiPekerjaanController@GetPreferensiPekerjaan');
-Route::put('preferensi-pekerjaan/{$id}'		,'PreferensiPekerjaanController@UpdatePreferensiPekerjaan');
-Route::delete('preferensi-pekerjaan/{$id}'	,'PreferensiPekerjaanController@DeletePreferensiPekerjaan');
+Route::get('preferensi-pekerjaan/{id}'		,'PreferensiPekerjaanController@GetPreferensiPekerjaan');//checked
+Route::put('preferensi-pekerjaan/{id}'		,'PreferensiPekerjaanController@UpdatePreferensiPekerjaan');//checked
+Route::delete('preferensi-pekerjaan/{id}'	,'PreferensiPekerjaanController@DeletePreferensiPekerjaan');
 /* END PREFERENSI PEKERJAAN */
 
 /* PENGALAMAN */
-Route::post('pengalaman','PengalamanController@PostPengalaman');//checked
-Route::get('pengalaman/{id}','PengalamanController@GetPengalaman');//checked
-Route::put('edit-pengalaman/{$id}','PengalamanController@UpdatePengalaman');
-Route::delete('pengalaman/{$id}','PengalamanController@DeletePengalaman');
+Route::post('pengalaman'			,'PengalamanController@PostPengalaman');//checked
+Route::put('edit-pengalaman/{id}'	,'PengalamanController@UpdatePengalaman');//route not found
+Route::get('pengalaman/{id}'		,'PengalamanController@GetPengalaman');//checked
+Route::delete('pengalaman/{id}'	,'PengalamanController@DeletePengalaman');
 /* END PENGALAMAN */
 
 /* PENDIDIKAN */
-Route::post('pendidikan','PendidikanController@PostPendidikan');
-Route::get('pendidikan/{$id}','PendidikanController@GetPendidikan');
-Route::put('pendidikan/{$id}','PendidikanController@UpdatePendidikan');
-Route::delete('pendidikan/{$id}','PendidikanController@DeletePendidikan');
+Route::post('pendidikan','PendidikanController@PostPendidikan');//checked
+Route::get('get-pendidikan/{id}','PendidikanController@GetPendidikan');//notfound
+Route::put('pendidikan/{id}','PendidikanController@UpdatePendidikan');
+Route::delete('pendidikan/{id}','PendidikanController@DeletePendidikan');
 /* END PENDIDIKAN */
 
 /* KEAHLIAN */
-Route::post('keahlian/{$id}','KeahlianController@PostKeahlian');
-Route::get('keahlian/{$id}','KeahlianController@GetKeahlian');
-Route::put('keahlian/{$id}','KeahlianController@UpdateKeahlian');
-Route::delete('keahlian/{$id}','KeahlianController@DeleteKeahlian');
+Route::post('keahlian/{id}','KeahlianController@PostKeahlian');
+Route::get('keahlian/{id}','KeahlianController@GetKeahlian');//notfound
+Route::put('keahlian/{id}','KeahlianController@UpdateKeahlian');
+Route::delete('keahlian/{id}','KeahlianController@DeleteKeahlian');
 /* END KEAHLIAN */
 
 /* BAHASA */
 Route::post('bahasa','BahasaController@PostBahasa');
-Route::get('bahasa/{$id}','BahasaController@GetBahasa');
-Route::put('bahasa/{$id}','BahasaController@UpdateBahasa');
-Route::delete('bahasa/{$id}','BahasaController@DeleteBahasa');
+Route::get('bahasa/{id}','BahasaController@GetBahasa');//notfound
+Route::put('bahasa/{id}','BahasaController@UpdateBahasa');
+Route::delete('bahasa/{id}','BahasaController@DeleteBahasa');
 /* END BAHASA */
 
 /* Upload CV */
 Route::post('uploadcv','UploadCvController@PostCv');
-Route::get('uploadcv/{$id}','UploadCvController@GetCv');
-Route::put('uploadcv/{$id}','UploadCvController@UpdateCv');
-Route::delete('uploadcv/{$id}','UploadCvController@DeleteCv');
+Route::get('uploadcv/{id}','UploadCvController@GetCv');//notfound
+Route::put('uploadcv/{id}','UploadCvController@UpdateCv');
+Route::delete('uploadcv/{id}','UploadCvController@DeleteCv');
 /* END BAHASA */
 
 /*LAMARAN Terkirim*/
 
-Route::get('lamaran-terkirim/{$id}','LamaranTerkirimController@GetLamaranTerkirim');
+Route::get('lamaran-terkirim/{id}','LamaranTerkirimController@GetLamaranTerkirim');//notfound
 
 /*END*/
 
-Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
+Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');//notfound
 
 // Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan')->middleware('jwt.verify:kandidat');
 Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
@@ -192,7 +192,7 @@ Route::put('admin-updatestatuskandidat/{idUserKandidat}','AdminConfig@UpdateStat
 Route::get('admin-getalliklan/{idperusahaan}','AdminConfig@GetAllIklan');
 Route::put('admin-updateiklan/{idIklan}','AdminConfig@UpdateIklan');
 Route::delete('admin-deleteiklan/{idperusahaan}','AdminConfig@DeleteIklanPerusahaan');
-Route::put('admin-updatestatusiklan/{idperusahaan}','AdminConfig@UpdateStatusIklan');
+Route::patch('admin-updatestatusiklan/{idperusahaan}','AdminConfig@UpdateStatusIklan');//checked
 
 /* END*/
 
