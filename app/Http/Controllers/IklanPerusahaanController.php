@@ -102,7 +102,7 @@ class IklanPerusahaanController extends Controller
         }
         public function GetIklanPerusahaanByGaji($gaji){
             $data = Iklan_Perusahaan::where('gaji_min','>=',$gaji)
-            ->where('status_iklan',0)
+            ->where('status_iklan',1)
             ->get();
             if(count($data)>0){
                 $res['count'] = count($data);
@@ -159,7 +159,7 @@ class IklanPerusahaanController extends Controller
                                 
                                 ->where(function($query) use($search){
                                     $query->where('posisi_pekerjaan','like','%' .$search. '%')
-                                        ->where('status_iklan','==',0)
+                                        ->where('status_iklan','==',1)
                                         ->orwhere('bidang_pekerjaan','like','%' .$search. '%')
                                         ->orwhere('provinsi','like','%' .$search. '%')
                                         ->orwhere('kota','like','%' .$search. '%')
@@ -215,10 +215,10 @@ class IklanPerusahaanController extends Controller
         $data->bidang_pekerjaan = $req->bidang_pekerjaan;
         $data->tingkat_pendidikan = $req->tingkat_pendidikan;
         $data->pengalaman_kerja = $req->pengalaman_kerja;
-        $data->persyaratan = $req->tingkat_pendidikan;
+        $data->persyaratan = $req->persyaratan;
         $data->benefit_perusahaan = $req->benefit_perusahaan;
         $data->url_header = $req->url_header;
-            if(count($data)>0){
+            // if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
@@ -228,11 +228,11 @@ class IklanPerusahaanController extends Controller
                 $res['data'] = $data;
                 return $res;
             }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }
+        // }else{
+        //     $res['count'] = count($data);
+        //     $res['message'] = 'data tidak ditemukan';
+        //     return $res;
+        // }
 
     }
 

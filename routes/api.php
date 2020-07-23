@@ -140,7 +140,7 @@ Route::post('atur-ulang','AturUlangController@PostAturUlang');
 
 /*PROFIL PERUSAHAAN*/
 Route::post('profil-perusahaan/{id}','ProfilPerusahaanController@PostProfilPerusahaan');//checked
-Route::get('profil-perusahaan/{id}','ProfilPerusahaanController@GetProfilPerusahaan');
+Route::get('profil-perusahaan/{id}','ProfilPerusahaanController@GetProfilPerusahaan');//checked
 Route::put('profil-perusahaan/{id}','ProfilPerusahaanController@UpdateProfilPerusahaan');
 
 /*END*/
@@ -150,10 +150,10 @@ Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusaha
 Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');//checked
 Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
 Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
-Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');
+Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');//checked
 // Route::get('filter-kota/{kota}','IklanPerusahaanController@GetIklanPerusahaanByKota');
-Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');
-Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');
+Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');//checked
+Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');//checked
 Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
 
 
