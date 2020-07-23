@@ -139,15 +139,15 @@ Route::post('atur-ulang','AturUlangController@PostAturUlang');
 /*END*/
 
 /*PROFIL PERUSAHAAN*/
-Route::post('profil-perusahaan/{id}','ProfilPerusahaanController@PostProfilPerusahaan');
+Route::post('profil-perusahaan/{id}','ProfilPerusahaanController@PostProfilPerusahaan');//checked
 Route::get('profil-perusahaan/{id}','ProfilPerusahaanController@GetProfilPerusahaan');
 Route::put('profil-perusahaan/{id}','ProfilPerusahaanController@UpdateProfilPerusahaan');
 
 /*END*/
 
 /*IKLAN PERUSAHAAN*/
-Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusahaan');
-Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');
+Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusahaan');//checked
+Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');//checked
 Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
 Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
 Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfilPerusahaanController extends Controller
 {
-    public function PostProfilPerusahaan(Request $id)
+    public function PostProfilPerusahaan(Request $req)
     {
 
         $validator = Validator::make($req->all(), 
@@ -39,7 +39,7 @@ class ProfilPerusahaanController extends Controller
             $input->foto_perusahaan = $req->foto_perusahaan;
             $input->jenis_industri = $req->jenis_industri;
             $input->website_perusahaan = $req->website_perusahaan;
-            $input->no_tlp_perusahaan = $req->no_tlp_perusahaan;
+            $input->no_telp_perusahaan = $req->no_telp_perusahaan;
             $input->no_npwp_perusahaan = $req->no_npwp_perusahaan;
             $input->url_npwp_perusahaan = $req->url_npwp_perusahaan;
 

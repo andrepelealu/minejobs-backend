@@ -14,7 +14,7 @@ class CreateDataPribadiTable extends Migration {
 	{
 		Schema::create('data_pribadi', function(Blueprint $table)
 		{
-			$table->increments('id', true);
+			$table->integer('id', true);
 			$table->integer('id_kandidat')->index('data_pribadi_fk0');
 			$table->string('nama_depan');
 			$table->string('nama_belakang');

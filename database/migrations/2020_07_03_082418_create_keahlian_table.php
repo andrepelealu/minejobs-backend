@@ -14,7 +14,7 @@ class CreateKeahlianTable extends Migration {
 	{
 		Schema::create('keahlian', function(Blueprint $table)
 		{
-			$table->increments('id', true);
+			$table->integer('id', true);
 			$table->integer('id_kandidat')->index('keahlian_fk0');
 			$table->string('nama_keahlian');
 			$table->string('tingkatan');

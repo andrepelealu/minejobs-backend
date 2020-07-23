@@ -102,7 +102,7 @@ class IklanPerusahaanController extends Controller
         }
         public function GetIklanPerusahaanByGaji($gaji){
             $data = Iklan_Perusahaan::where('gaji_min','>=',$gaji)
-            ->where('status_iklan','=',1)
+            ->where('status_iklan',0)
             ->get();
             if(count($data)>0){
                 $res['count'] = count($data);
@@ -131,7 +131,7 @@ class IklanPerusahaanController extends Controller
             }
         }
         public function GetIklanPerusahaan(){
-            $data = Iklan_Perusahaan::all()->where('status_iklan','=',1)->get();
+            $data = Iklan_Perusahaan::where('status_iklan',1)->get();
             if(count($data)>0){
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';
@@ -144,23 +144,45 @@ class IklanPerusahaanController extends Controller
             }
 
         }
-        public function CariIklanPerusahaan (Request $posisi)
+        public function CariIklanPerusahaan (Request $req)
         {
             // menangkap data pencarian
-            $cari = $posisi->posisi_pekerjaan;
+            $search             = $req->keyword;
+            // $bidang             = $req->bidang_pekerjaan;
+            // $provinsi           = $req->provinsi;
+            // $kota               = $req->kota;
+            // $nama_perusahaan    = $req->nama_perusahaan;
+
             $data= DB::table('iklan_perusahaan')
-                    ->join('profile_perusahaan',function($join) use($cari){
+                    ->join('profile_perusahaan',function($join) use($search){
                         $join->on('iklan_perusahaan.id_perusahaan','=','profile_perusahaan.id_perusahaan')
-                            ->where('iklan_perusahaan.posisi_pekerjaan','like','%'.$cari.'%')
-                            ->where('status_iklan','=',1)
-                            ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan');
+                                
+                                ->where(function($query) use($search){
+                                    $query->where('posisi_pekerjaan','like','%' .$search. '%')
+                                        ->where('status_iklan','==',0)
+                                        ->orwhere('bidang_pekerjaan','like','%' .$search. '%')
+                                        ->orwhere('provinsi','like','%' .$search. '%')
+                                        ->orwhere('kota','like','%' .$search. '%')
+                                        ->orwhere('nama_perusahaan','like','%' .$search. '%');
+                                });
+                                // ->orwhere(function($query) use($search){
+                                //     ->where('status_iklan','==',0);
+                                // });
+                                
+
+                        
+                            // ->where('iklan_perusahaan.bidang_pekerjaan','like','%'.$posisi.'%')
+                            // ->orwhere('iklan_perusahaan.provinsi',$provinsi)
+                            // ->orwhere('iklan_perusahaan.kota',$kota)
+                            // ->orwhere('nama_perusahaan',$nama_perusahaan)
+                            // ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan');
                     })
                     ->get();
             if(count($data)>0){
 
                 $res['count'] = count($data);
                 $res['message'] = 'data ditemukan';
-                $res['keyword'] = $cari;
+                $res['keyword'] = $search;
                 $res['data'] = $data;
                 // $res['data'] = $perusahaan;
 
