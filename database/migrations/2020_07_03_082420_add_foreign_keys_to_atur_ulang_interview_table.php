@@ -20,7 +20,7 @@ class AddForeignKeysToAturUlangInterviewTable extends Migration {
 		});
 	}
 
-
+//
 	/**
 	 * Reverse the migrations.
 	 *

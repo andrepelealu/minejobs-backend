@@ -14,7 +14,7 @@ class CreateUserKandidatVerificationTable extends Migration
     public function up()
     {
         Schema::create('user_kandidat_verification', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
             $table->integer('id_kandidat')->index('user_kandidat_verification_fk0');
             $table->string('token');
 
