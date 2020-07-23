@@ -9,6 +9,8 @@ use App\UndanganInterview;
 use App\UserKandidat;
 use App\ProfilPerusahaan;
 use App\Iklan_Perusahaan;
+use App\AturUlang;
+
 use Mail,DB;
 use Illuminate\Mail\Message;
 
@@ -92,4 +94,43 @@ class UndanganInterviewController extends Controller
         return response()->json($res, 200);
     }
 
+public function GetUndanganInterview($id){
+    $data = UndanganInterview::where('id_perusahaan',$id)->get();
+    if(count($data)>0){
+        $res['count'] = count($data);
+        $res['message'] = 'data ditemukan';
+        $res['data'] = $data;
+        return $res;
+    }else{
+        $res['count'] = count($data);
+        $res['message'] = 'data tidak ditemukan';
+        return $res;
+    }
+
+}
+public function UpdateStatusUndanganInterview($id,$req){
+    $data = UndanganInterview::where('id_kandidat',$id)->get();
+    if($req > 0) {
+        $input = new JadwalInterview;
+        $input->id_kandidat = $req->id_kandidat;
+        $input->id_perusahaan = $req->id_perusahaan;
+        $input->id_iklan = $req->id_iklan;
+
+        $input -> save();
+        $res['message'] = 'Jadwal Berhasil Ditambahkan';
+        return $res;
+    }
+    else{
+        $input = new AturUlang;
+        $input->id_kandidat = $req->id_kandidat;
+        $input->id_perusahaan = $req->id_perusahaan;
+        $input->id_iklan = $req->id_iklan;
+
+        $input -> save();
+        $res['message']='Atur Ulang Jadwal Telah Diajukan';
+        return $res;
+
+
+    }
+}
 }

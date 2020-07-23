@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PicPerusahaanController extends Controller
 {
-    public function PostProfilPic(Request $idperusahaan)
+    public function PostProfilPic(Request $req)
     {
 
         $validator = Validator::make($req->all(), 
@@ -24,27 +24,27 @@ class PicPerusahaanController extends Controller
         }
             $data                  = new PicPerusahaan;
             $data->id_perusahaan   = $req->id_perusahaan;
-            $data->nama_pic        = $req->id_perusahaan;
+            $data->nama_pic        = $req->nama_pic;
             $data->no_telp_pic     = $req->no_telp_pic;
             $data->url_ktp_pic     = $req->url_ktp_pic;
 
 
-            $input->save();
+            $data->save();
 
         $res['message'] = 'berhasil post';
         $res['data'] = $data;
         return response()->json($res, 200);
     }
-    public function UpdateProfilePic($id)
+    public function UpdatePicPerusahaan(Request $req,$id)
     {
-        $data = PicPerusahaan::find($id,'id')->first();
+        $data = PicPerusahaan::find($req,'id_perusahaan')->first();
         // $data->id_kandidat = $req->id_kandidat;
         $data->id_perusahaan   = $req->id_perusahaan;
-        $data->nama_pic        = $req->id_perusahaan;
+        $data->nama_pic        = $req->nama_pic;
         $data->no_telp_pic     = $req->no_telp_pic;
         $data->url_ktp_pic     = $req->url_ktp_pic;
 
-        if(count($data)>0){
+        // if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
@@ -54,13 +54,13 @@ class PicPerusahaanController extends Controller
                 $res['data'] = $data;
                 return $res;
             }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }
+        // }else{
+        //     $res['count'] = count($data);
+        //     $res['message'] = 'data tidak ditemukan';
+        //     return $res;
+        // }
     }
-    public function GetProfilPerusahaan($idperusahaan)
+    public function GetPicPerusahaan($id)
     {
         $data = PicPerusahaan::where('id_perusahaan',$id)->get();
         if(count($data)>0){

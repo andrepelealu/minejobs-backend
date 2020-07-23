@@ -83,7 +83,7 @@ class PreferensiPekerjaanController extends Controller
     public function DeletePreferensiPekerjaan($id)
     {
         $data = PreferensiPekerjaan::find($id,'id_kandidat')->first();
-        if(count($data)>0){
+        // if(count($data)>0){
             if($data->delete()){
                 $res['message'] = 'Berhasil Dihapus';
                 $res['data'] = $data;
@@ -93,11 +93,11 @@ class PreferensiPekerjaanController extends Controller
                 $res['data'] = $data;
                 return $res;
             }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }
+        // }else{
+        //     $res['count'] = count($data);
+        //     $res['message'] = 'data tidak ditemukan';
+        //     return $res;
+        // }
     }
 
 }

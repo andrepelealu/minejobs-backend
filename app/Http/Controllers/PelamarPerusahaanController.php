@@ -27,6 +27,7 @@ class PelamarPerusahaanController extends Controller
     $input->id_kandidat = $req->id_kandidat;
     $input->id_iklan = $req->id_iklan;
     $input->tanggal_lamaran = $req->tanggal_lamaran;
+    $input->id_perusahaan = $req->id_perusahaan;
     // Table::select('name','surname')->where('id', 1)->get();
 
     $input->save();
@@ -69,7 +70,7 @@ class PelamarPerusahaanController extends Controller
         $data->status_lamaran = $req->status_lamaran;
         // $data->id_iklan = $req->id_iklan;
         // $data->tanggal_lamaran = $req->tanggal_lamaran;            
-        if(count($data)>0){
+        // if(count($data)>0){
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
@@ -79,16 +80,16 @@ class PelamarPerusahaanController extends Controller
                 $res['data'] = $data;
                 return $res;
             }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }
+        // }else{
+        //     $res['count'] = count($data);
+        //     $res['message'] = 'data tidak ditemukan';
+        //     return $res;
+        // }
 
     }
-    public function DeletePelamarPerusahaan(){
+    public function DeletePelamarPerusahaan($id){
         $data = Pelamar_Perusahaan::find($id,'id_perusahaan')->first();
-        if(count($data)>0){
+        // if(count($data)>0){
             if($data->delete()){
                 $res['message'] = 'Berhasil Dihapus';
                 $res['data'] = $data;
@@ -98,11 +99,11 @@ class PelamarPerusahaanController extends Controller
                 $res['data'] = $data;
                 return $res;
             }
-        }else{
-            $res['count'] = count($data);
-            $res['message'] = 'data tidak ditemukan';
-            return $res;
-        }       
+        // }else{
+        //     $res['count'] = count($data);
+        //     $res['message'] = 'data tidak ditemukan';
+        //     return $res;
+        // }       
     } //
 //
 }
