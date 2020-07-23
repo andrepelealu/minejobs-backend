@@ -28,8 +28,7 @@ class LamaranTersimpanController extends Controller
     public function PostLamaranTersimpan(Request $req){
         $validator = Validator::make($req->all(), [
             'id_kandidat' => 'required',
-            'id_iklan' => 'required|string',
-            'id_kandidat' =>'required|string'
+            'id_iklan' => 'required'
         ]
     );
     if($validator->fails()){

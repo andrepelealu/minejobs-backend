@@ -85,42 +85,42 @@ Route::delete('pengalaman/{id}'	,'PengalamanController@DeletePengalaman');
 
 /* PENDIDIKAN */
 Route::post('pendidikan','PendidikanController@PostPendidikan');//checked
-Route::get('get-pendidikan/{id}','PendidikanController@GetPendidikan');//notfound
-Route::put('pendidikan/{id}','PendidikanController@UpdatePendidikan');
+Route::get('get-pendidikan/{id}','PendidikanController@GetPendidikan');//checked
+Route::put('pendidikan/{id}','PendidikanController@UpdatePendidikan');//checked
 Route::delete('pendidikan/{id}','PendidikanController@DeletePendidikan');
 /* END PENDIDIKAN */
 
 /* KEAHLIAN */
-Route::post('keahlian/{id}','KeahlianController@PostKeahlian');
-Route::get('keahlian/{id}','KeahlianController@GetKeahlian');//notfound
-Route::put('keahlian/{id}','KeahlianController@UpdateKeahlian');
+Route::post('keahlian','KeahlianController@PostKeahlian');//checked
+Route::get('keahlian/{id}','KeahlianController@GetKeahlian');//checked
+Route::put('keahlian/{id}','KeahlianController@UpdateKeahlian');//checked
 Route::delete('keahlian/{id}','KeahlianController@DeleteKeahlian');
 /* END KEAHLIAN */
 
 /* BAHASA */
-Route::post('bahasa','BahasaController@PostBahasa');
-Route::get('bahasa/{id}','BahasaController@GetBahasa');//notfound
-Route::put('bahasa/{id}','BahasaController@UpdateBahasa');
+Route::post('bahasa','BahasaController@PostBahasa');//checked
+Route::get('bahasa/{id}','BahasaController@GetBahasa');//checked
+Route::put('bahasa/{id}','BahasaController@UpdateBahasa');//checked
 Route::delete('bahasa/{id}','BahasaController@DeleteBahasa');
 /* END BAHASA */
 
 /* Upload CV */
-Route::post('uploadcv','UploadCvController@PostCv');
-Route::get('uploadcv/{id}','UploadCvController@GetCv');//notfound
-Route::put('uploadcv/{id}','UploadCvController@UpdateCv');
+Route::post('uploadcv','UploadCvController@PostCv');//checked
+Route::get('uploadcv/{id}','UploadCvController@GetCv');//checked
+Route::put('uploadcv/{id}','UploadCvController@UpdateCv');//checked
 Route::delete('uploadcv/{id}','UploadCvController@DeleteCv');
 /* END BAHASA */
 
 /*LAMARAN Terkirim*/
 
-Route::get('lamaran-terkirim/{id}','LamaranTerkirimController@GetLamaranTerkirim');//notfound
+// Route::get('lamaran-terkirim/{id}','LamaranTerkirimController@GetLamaranTerkirim');
 
 /*END*/
 
-Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');//notfound
+Route::get('lamaran-tersimpan/{id}','LamaranTersimpanController@GetLamaranTersimpan');//checked
 
 // Route::get('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan')->middleware('jwt.verify:kandidat');
-Route::post('lamaran-tersimpan','LamaranTersimpanController@GetLamaranTersimpan');
+Route::post('lamaran-tersimpan','LamaranTersimpanController@PostLamaranTersimpan');//checked
 
 /*END*/
 

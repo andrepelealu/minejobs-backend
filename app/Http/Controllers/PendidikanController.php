@@ -44,7 +44,7 @@ class PendidikanController extends Controller
     
     public function GetPendidikan($id)
     {
-         $data = Pendidikan::where('id_kandidat',$idkandidat)->get();
+         $data = Pendidikan::where('id_kandidat',$id)->get();
          if(count($data)>0){
              $res['count'] = count($data);
              $res['message'] = 'data ditemukan';
@@ -61,13 +61,14 @@ class PendidikanController extends Controller
     {
         $data = Pendidikan::find($id,'id_kandidat')->first();
         // $data->id_kandidat = $req->id_kandidat;
-        $data->id_kandidat      = $req->id_kandidat;
-        $data->jurusan          = $req->nama_depan;
-        $data->tahun_mulai      = $req->nama_belakang;
-        $data->tahun_selesai    = $req->nomor_telepon;
-        $data->nama_instansi    = $req->provinsi;
+        $data->id_kandidat          = $req->id_kandidat;
+        $data->jurusan              = $req->jurusan;
+        $data->tahun_mulai          = $req->tahun_mulai;
+        $data->tahun_selesai        = $req->tahun_selesai;
+        $data->nama_instansi        = $req->nama_instansi;
+        $data->jenjang_pendidikan   = $req->jenjang_pendidikan;
         if(count($data)>0){
-            if($input->save()){
+            if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
                 return $res;
