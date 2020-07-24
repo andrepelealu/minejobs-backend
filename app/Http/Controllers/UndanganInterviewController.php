@@ -43,6 +43,8 @@ class UndanganInterviewController extends Controller
             $input->waktu_mulai = $req->waktu_mulai;
             $input->waktu_selesai = $req->waktu_selesai;
             $input->metode_interview = $req->metode_interview;
+            $input->status = 'menunggu verifikasi';
+
             
 
     // Table::select('name','surname')->where('id', 1)->get();
