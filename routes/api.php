@@ -73,7 +73,7 @@ Route::put('data-pribadi/{id}'	,'DataPribadiController@UpdateDataPribadi');//che
 Route::post('preferensi-pekerjaan'			,'PreferensiPekerjaanController@PostPreferensiPekerjaan');//checked
 Route::get('preferensi-pekerjaan/{id}'		,'PreferensiPekerjaanController@GetPreferensiPekerjaan');//checked
 Route::put('preferensi-pekerjaan/{id}'		,'PreferensiPekerjaanController@UpdatePreferensiPekerjaan');//checked
-Route::delete('preferensi-pekerjaan/{id}'	,'PreferensiPekerjaanController@DeletePreferensiPekerjaan');
+Route::delete('preferensi-pekerjaan/{id}'	,'PreferensiPekerjaanController@DeletePreferensiPekerjaan');//checked
 /* END PREFERENSI PEKERJAAN */
 
 /* PENGALAMAN */
@@ -134,27 +134,27 @@ Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 /*END*/
 
 /*ATUR ULANG INTERVIEW*/
-Route::post('atur-ulang','AturUlangController@PostAturUlang');
+Route::post('atur-ulang','AturUlangController@PostAturUlang');//ok
 
 /*END*/
 
 /*PROFIL PERUSAHAAN*/
 Route::post('profil-perusahaan/{id}','ProfilPerusahaanController@PostProfilPerusahaan');//checked
 Route::get('profil-perusahaan/{id}','ProfilPerusahaanController@GetProfilPerusahaan');//checked
-Route::put('profil-perusahaan/{id}','ProfilPerusahaanController@UpdateProfilPerusahaan');
+Route::put('profil-perusahaan/{id}','ProfilPerusahaanController@UpdateProfilPerusahaan');//ok
 
 /*END*/
 
 /*IKLAN PERUSAHAAN*/
 Route::post('iklan-perusahaan/{id}','IklanPerusahaanController@PostIklanPerusahaan');//checked
 Route::get('iklan-perusahaan/{id}','IklanPerusahaanController@GetIklanPerusahaan');//checked
-Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');
+Route::put('iklan-perusahaan/{id}','IklanPerusahaanController@UpdateIklanPerusahaan');//checked
 Route::delete('iklan-perusahaan/{id}','IklanPerusahaanController@DeleteIklanPerusahaan');
 Route::get('filter-gaji/{gaji}','IklanPerusahaanController@GetIklanPerusahaanByGaji');//checked
 // Route::get('filter-kota/{kota}','IklanPerusahaanController@GetIklanPerusahaanByKota');
 Route::post('filter-lokasi','IklanPerusahaanController@GetIklanPerusahaanByLokasi');//checked
 Route::get('filter-bidang/{bidang}','IklanPerusahaanController@GetIklanPerusahaanByBidang');//checked
-Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
+Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');//checked
 
 
 
@@ -165,22 +165,21 @@ Route::post('cari-iklan/','IklanPerusahaanController@CariIklanPerusahaan');
 
 /*END*/
 /*UNDANGAN INTERVIEW*/
-Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInterview');
+Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInterview');//checked
 
 /* KIRIM UNDANGAN */
-Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
-//buat route edit tanggal, sekaligus kirim email
+Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');//checked
 /*END*/
 /*END*/
-Route::post('pelamar-perusahaan/','PelamarPerusahaanController@PostPelamarPerusahaan');
-Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');
-Route::put('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
-Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');
+Route::post('pelamar-perusahaan/','PelamarPerusahaanController@PostPelamarPerusahaan');//checked
+Route::get('pelamar-perusahaan/{id}','PelamarPerusahaanController@GetPelamarPerusahaan');//checked
+Route::patch('pelamar-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPelamar');//ok
+Route::delete('pelamar-perusahaan/{id}','PelamarPerusahaanController@DeletePelamarPerusahaan');//ok
 
 /*DATA PIC PERUSAHAAN*/
-Route::post('pic-perusahaan/{idperusahaan}','PelamarPerusahaanController@PostPelamarPerusahaan');
-Route::get('pic-perusahaan/{idperusahaan}','PelamarPerusahaanController@GetPelamarPerusahaan');
-Route::put('pic-perusahaan/{id}','PelamarPerusahaanController@UpdateStatusPerusahaan');
+Route::post('pic-perusahaan/{idperusahaan}','PicPerusahaanController@PostProfilPic');//checked
+Route::get('pic-perusahaan/{idperusahaan}','PicPerusahaanController@GetPicPerusahaan');//checked
+Route::put('pic-perusahaan/{id}','PicPerusahaanController@UpdatePicPerusahaan');//checked
 /* END*/
 
 /*ADMIN */

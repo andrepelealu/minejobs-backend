@@ -27,6 +27,7 @@ class PelamarPerusahaanController extends Controller
     $input->id_kandidat = $req->id_kandidat;
     $input->id_iklan = $req->id_iklan;
     $input->tanggal_lamaran = $req->tanggal_lamaran;
+    $input->id_perusahaan = $req->id_perusahaan;
     // Table::select('name','surname')->where('id', 1)->get();
 
     $input->save();
@@ -64,12 +65,13 @@ class PelamarPerusahaanController extends Controller
     }
     public function UpdateStatusPelamar(Request $req , $id){
 
-        $data = Pelamar_Perusahaan::find($id,'id_kandidat')->first();
+        $check = Pelamar_Perusahaan::find($id,'id_kandidat');
         // $data->id_perusahaan = $req->id_perusahaan;
-        $data->status_lamaran = $req->status_lamaran;
         // $data->id_iklan = $req->id_iklan;
         // $data->tanggal_lamaran = $req->tanggal_lamaran;            
-        if(count($data)>0){
+        if(count($check)>0){
+            $data = Pelamar_Perusahaan::find($id,'id_kandidat')->first();
+            $data->status_lamaran = $req->status_lamaran;
             if($data->save()){
                 $res['message'] = 'Berhasil Update';
                 $res['data'] = $data;
@@ -86,9 +88,10 @@ class PelamarPerusahaanController extends Controller
         }
 
     }
-    public function DeletePelamarPerusahaan(){
-        $data = Pelamar_Perusahaan::find($id,'id_perusahaan')->first();
-        if(count($data)>0){
+    public function DeletePelamarPerusahaan($id){
+        $check = Pelamar_Perusahaan::find($id,'id_perusahaan');
+        if(count($check)>0){
+            $data = Pelamar_Perusahaan::find($id,'id_perusahaan')->first();
             if($data->delete()){
                 $res['message'] = 'Berhasil Dihapus';
                 $res['data'] = $data;

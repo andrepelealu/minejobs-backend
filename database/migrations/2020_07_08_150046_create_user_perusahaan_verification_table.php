@@ -14,7 +14,7 @@ class CreateUserPerusahaanVerificationTable extends Migration
     public function up()
     {
         Schema::create('user_perusahaan_verification', function (Blueprint $table) {
-            $table->integer('id');
+            $table->integer('id',true);
             $table->integer('id_kandidat')->index('user_perusahaan_verification_fk0');
             $table->string('token');
 
