@@ -35,7 +35,7 @@ class PicPerusahaanController extends Controller
         $res['data'] = $data;
         return response()->json($res, 200);
     }
-    public function UpdateProfilePic($id)
+    public function UpdateProfilePic(Request $req, $id)
     {
         $data = PicPerusahaan::find($id,'id')->first();
         // $data->id_kandidat = $req->id_kandidat;

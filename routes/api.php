@@ -114,7 +114,7 @@ Route::delete('uploadcv/{id}','UploadCvController@DeleteCv');
 /*LAMARAN Terkirim*/
 
 // Route::get('lamaran-terkirim/{id}','LamaranTerkirimController@GetLamaranTerkirim');
-
+//u
 /*END*/
 
 Route::get('lamaran-tersimpan/{id}','LamaranTersimpanController@GetLamaranTersimpan');//checked
@@ -169,6 +169,7 @@ Route::get('undangan-interview/{id}','UndanganInterviewController@GetUndanganInt
 
 /* KIRIM UNDANGAN */
 Route::post('kirim/undangan','UndanganInterviewController@PostUndanganInterview');
+//buat route edit tanggal, sekaligus kirim email
 /*END*/
 /*END*/
 Route::post('pelamar-perusahaan/','PelamarPerusahaanController@PostPelamarPerusahaan');
