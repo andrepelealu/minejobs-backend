@@ -27,6 +27,7 @@ class PicPerusahaanController extends Controller
             $data->nama_pic        = $req->nama_pic;
             $data->no_telp_pic     = $req->no_telp_pic;
             $data->url_ktp_pic     = $req->url_ktp_pic;
+            $data->url_foto_profile = $req->url_foto_profile;
 
 
             $data->save();
@@ -43,6 +44,7 @@ class PicPerusahaanController extends Controller
         $data->nama_pic        = $req->nama_pic;
         $data->no_telp_pic     = $req->no_telp_pic;
         $data->url_ktp_pic     = $req->url_ktp_pic;
+        $data->url_foto_profile = $req->url_foto_profile;
 
         // if(count($data)>0){
             if($data->save()){

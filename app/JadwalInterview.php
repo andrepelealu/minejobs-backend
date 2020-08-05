@@ -7,16 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class JadwalInterview extends Model
 {
     //
-    protected $table = 'undangan_interview';
+    protected $table = 'jadwal_interview';
     public $timestamps = false;
 
     protected $fillable = [
+    'id_undangan_interview',
     'id_kandidat',
-    'nama_depan',
-    'nama_belakang',
-    'nomor_telepon',
-    'provinsi',
-    'kota',
-    'tentang',
-    'foto_profile'];
+    'id_perusahaan'
+    ];
 }

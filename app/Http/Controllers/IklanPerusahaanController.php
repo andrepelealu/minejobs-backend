@@ -148,10 +148,6 @@ class IklanPerusahaanController extends Controller
         {
             // menangkap data pencarian
             $search             = $req->keyword;
-            // $bidang             = $req->bidang_pekerjaan;
-            // $provinsi           = $req->provinsi;
-            // $kota               = $req->kota;
-            // $nama_perusahaan    = $req->nama_perusahaan;
 
             $data= DB::table('iklan_perusahaan')
                     ->join('profile_perusahaan',function($join) use($search){
@@ -165,17 +161,6 @@ class IklanPerusahaanController extends Controller
                                         ->orwhere('kota','like','%' .$search. '%')
                                         ->orwhere('nama_perusahaan','like','%' .$search. '%');
                                 });
-                                // ->orwhere(function($query) use($search){
-                                //     ->where('status_iklan','==',0);
-                                // });
-                                
-
-                        
-                            // ->where('iklan_perusahaan.bidang_pekerjaan','like','%'.$posisi.'%')
-                            // ->orwhere('iklan_perusahaan.provinsi',$provinsi)
-                            // ->orwhere('iklan_perusahaan.kota',$kota)
-                            // ->orwhere('nama_perusahaan',$nama_perusahaan)
-                            // ->select('iklan_perusahaan.*','profile_perusahaan.nama_perusahaan');
                     })
                     ->get();
             if(count($data)>0){

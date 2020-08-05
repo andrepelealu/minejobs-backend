@@ -134,7 +134,7 @@ Route::get('semua-jadwal/{id}','JadwalInterviewController@OrderByDate');
 /*END*/
 
 /*ATUR ULANG INTERVIEW*/
-Route::post('atur-ulang','AturUlangController@PostAturUlang');//ok
+Route::get('atur-ulang','AturUlangController@GetAturUlang');//ok
 
 /*END*/
 

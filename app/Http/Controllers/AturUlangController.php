@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\AturUlang;
+use App\UndanganInterview;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
@@ -9,26 +9,19 @@ use Illuminate\Http\Request;
 class AturUlangController extends Controller
 {
     //Route::post('atur-ulang','AturUlangController@PostAturUlang');
-    public function PostAturUlang(Request $req){
-        $validator = Validator::make($req->all(), [
-            'id_undangan_interview' => 'required',
-            'id_kandidat' => 'required',
-            'id_perusahaan' =>'required',
-        ]
-    );
-    if($validator->fails()){
-        return response()->json($validator->errors()->toJson(), 400);
-    }
-    $input = new AturUlang;
-    $input->id_undangan_interview = $req->id_undangan_interview;
-    $input->id_kandidat = $req->id_kandidat;
-    $input->id_perusahaan = $req->id_perusahaan;
-
-    $input->save();
-
-    $res['message'] = 'berhasil post';
-    $res['data'] = $input;
-    return response()->json($res, 200);
-        
-    }
+    public function GetAturUlang(Request $req){
+        $data = UndanganInterview::where('id_kandidat',$id)
+                ->where('status','atur ulang')
+                ->get();
+        if(count($data)>0){
+            $res['count'] = count($data);
+            $res['message'] = 'data ditemukan';
+            $res['data'] = $data;
+            return $res;
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'tidak ada permintaan atur ulang';
+            return $res;
+        }
+}
 }

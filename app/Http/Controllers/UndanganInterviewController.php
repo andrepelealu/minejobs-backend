@@ -43,24 +43,9 @@ class UndanganInterviewController extends Controller
             $input->waktu_mulai = $req->waktu_mulai;
             $input->waktu_selesai = $req->waktu_selesai;
             $input->metode_interview = $req->metode_interview;
-            $input->status = 'menunggu verifikasi';
-
+            $input->url_concall = $req->url_concall;
+            $input->status = 'menunggu konfirmasi';
             
-
-    // Table::select('name','surname')->where('id', 1)->get();
-
-
-    // $email = user_kandidat::select('email')->where('id',$req->id_kandidat)->get('email');
-    // $cek = var_dump((string) $email->email);
-    // $subject = "Minejobs | Undangan Interview";
-    // Mail::send('email.undangan_interview', ['tanggal' => $req->tanggal_lamaran],
-    //     function($mail) use ($email, $subject){
-    //         $mail->from('donotreply@minejobs.id');
-    //         $mail->to((string) $email->email);
-    //         $mail->subject($subject);
-    //     });
-
-    // $email = UserKandidat::select('email')->where('id',$req->id_kandidat)->get();
     $detailIklan = Iklan_Perusahaan::select('posisi_pekerjaan')->where('id',$req->id_iklan)->get();
     $detailPerusahaan = ProfilPerusahaan::select('nama_perusahaan')->where('id_perusahaan',$req->id_perusahaan)->get();
     
@@ -92,6 +77,36 @@ class UndanganInterviewController extends Controller
         $res['message'] = 'berhasil post';
         $res['data'] = $input;
         return response()->json($res, 200);
+    }
+
+    public function UpdateStatusInterview(Request $req, $id)
+    {
+        $data = UndanganInterview::find($id,'id')->first();
+        // $data->id_perusahaan = $req->id_perusahaan;
+        $data->status_iklan = $req->status;
+            if(count($data)>0){
+            if($req->status === 'diterima'){
+                $data->save();
+                //insert into jadwal interview
+                $res['message'] = 'Undangan diterima';
+                $res['data'] = $data;
+                return $res;
+            }else if($req->status === 'atur ulang'){
+                //insert into atur ulang interview
+                $data->save();
+                $res['message'] = 'Permintaan Atur Ulang';
+                $res['data'] = $data;
+                return $res;
+            }else{
+                $res['message'] = 'Gagal di Update';
+                $res['data'] = $data;
+                return $res;
+            }
+        }else{
+            $res['count'] = count($data);
+            $res['message'] = 'data tidak ditemukan';
+            return $res;
+        }
     }
 
 }

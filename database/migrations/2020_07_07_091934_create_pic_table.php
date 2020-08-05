@@ -18,7 +18,8 @@ class CreatePicTable extends Migration
 			$table->integer('id_perusahaan')->index('pic_perusahaan_fk0');
 			$table->string('nama_pic');
 			$table->string('no_telp_pic');
-			$table->string('url_ktp_pic')->nullable();
+            $table->string('url_ktp_pic')->nullable();
+            $table->string('url_foto_profile')->nullable();
 
         });
     }
@@ -30,6 +31,6 @@ class CreatePicTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pic');
+        Schema::dropIfExists('pic_perusahaan');
     }
 }

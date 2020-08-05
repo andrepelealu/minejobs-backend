@@ -121,9 +121,12 @@ class UserPerusahaanController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+
+        $data = DB::table('pic_perusahaan')->where('id_perusahaan',auth()->user()->id)->get();
         $res['status'] = 200;
         $res['messages'] = 'this token has special treatment [code:1]';
         $res['user'] = auth()->user();
+        $res['data'] = $data;
         $res['token'] = $token.rand(0, 9);        
         return response()->json($res);
 

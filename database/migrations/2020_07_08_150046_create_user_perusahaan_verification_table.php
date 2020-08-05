@@ -28,6 +28,6 @@ class CreateUserPerusahaanVerificationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_kandidat_verification');
+        Schema::dropIfExists('user_perusahaan_verification');
     }
 }

@@ -139,10 +139,12 @@ class UserKandidatController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+        $data = DB::table('data_pribadi')->where('id_kandidat',auth()->user()->id)->get();
 
         $res['status'] = 200;
         $res['messages'] = 'Login Success';
         $res['user'] = auth()->user();
+        $res['data'] = $data;
         $res['token'] = $token;        
         return response()->json($res);
 
