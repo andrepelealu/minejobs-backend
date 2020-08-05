@@ -29,6 +29,6 @@ class CreateUserAdminVerificationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_kandidat_verification');
+        Schema::dropIfExists('user_admin_verification');
     }
 }
