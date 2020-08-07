@@ -80,35 +80,35 @@ Route::delete('preferensi-pekerjaan/{id}'	,'PreferensiPekerjaanController@Delete
 Route::post('pengalaman'			,'PengalamanController@PostPengalaman');//checked
 Route::put('edit-pengalaman/{id}'	,'PengalamanController@UpdatePengalaman');//route not found
 Route::get('pengalaman/{id}'		,'PengalamanController@GetPengalaman');//checked
-Route::delete('pengalaman/{id}'	,'PengalamanController@DeletePengalaman');
+Route::delete('pengalaman/{id}'		,'PengalamanController@DeletePengalaman');
 /* END PENGALAMAN */
 
 /* PENDIDIKAN */
-Route::post('pendidikan','PendidikanController@PostPendidikan');//checked
+Route::post('pendidikan'		,'PendidikanController@PostPendidikan');//checked
 Route::get('get-pendidikan/{id}','PendidikanController@GetPendidikan');//checked
-Route::put('pendidikan/{id}','PendidikanController@UpdatePendidikan');//checked
-Route::delete('pendidikan/{id}','PendidikanController@DeletePendidikan');
+Route::put('pendidikan/{id}'	,'PendidikanController@UpdatePendidikan');//checked
+Route::delete('pendidikan/{id}'	,'PendidikanController@DeletePendidikan');
 /* END PENDIDIKAN */
 
 /* KEAHLIAN */
-Route::post('keahlian','KeahlianController@PostKeahlian');//checked
-Route::get('keahlian/{id}','KeahlianController@GetKeahlian');//checked
-Route::put('keahlian/{id}','KeahlianController@UpdateKeahlian');//checked
-Route::delete('keahlian/{id}','KeahlianController@DeleteKeahlian');
+Route::post('keahlian'			,'KeahlianController@PostKeahlian');//checked
+Route::get('keahlian/{id}'		,'KeahlianController@GetKeahlian');//checked
+Route::put('keahlian/{id}'		,'KeahlianController@UpdateKeahlian');//checked
+Route::delete('keahlian/{id}'	,'KeahlianController@DeleteKeahlian');
 /* END KEAHLIAN */
 
 /* BAHASA */
-Route::post('bahasa','BahasaController@PostBahasa');//checked
-Route::get('bahasa/{id}','BahasaController@GetBahasa');//checked
-Route::put('bahasa/{id}','BahasaController@UpdateBahasa');//checked
-Route::delete('bahasa/{id}','BahasaController@DeleteBahasa');
+Route::post('bahasa'		,'BahasaController@PostBahasa');//checked
+Route::get('bahasa/{id}'	,'BahasaController@GetBahasa');//checked
+Route::put('bahasa/{id}'	,'BahasaController@UpdateBahasa');//checked
+Route::delete('bahasa/{id}'	,'BahasaController@DeleteBahasa');
 /* END BAHASA */
 
 /* Upload CV */
-Route::post('uploadcv','UploadCvController@PostCv');//checked
-Route::get('uploadcv/{id}','UploadCvController@GetCv');//checked
-Route::put('uploadcv/{id}','UploadCvController@UpdateCv');//checked
-Route::delete('uploadcv/{id}','UploadCvController@DeleteCv');
+Route::post('uploadcv'			,'UploadCvController@PostCv');//checked
+Route::get('uploadcv/{id}'		,'UploadCvController@GetCv');//checked
+Route::put('uploadcv/{id}'		,'UploadCvController@UpdateCv');//checked
+Route::delete('uploadcv/{id}'	,'UploadCvController@DeleteCv');
 /* END BAHASA */
 
 /*LAMARAN Terkirim*/

@@ -11,9 +11,12 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    $res['status'] = true;
+     $res['message'] = 'welcome to minejobs api';
+     return $res;
+
+});
 Route::get('perusahaan/verify/{verification_code}', 'UserPerusahaanController@verifyUser');
 Route::get('admin/verify/{verification_code}', 'UserAdminController@verifyUser');
 Route::get('user/verify/{verification_code}', 'UserKandidatController@verifyUser');
