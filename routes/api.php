@@ -67,7 +67,7 @@ Route::post('data-pribadi'		,'DataPribadiController@PostDataPribadi');//checked
 Route::get('data-pribadi'		,'DataPribadiController@GetDataPribadi');//checked
 Route::get('data-pribadi/{id}'	,'DataPribadiController@GetDataPribadiById');//checked
 Route::put('data-pribadi/{id}'	,'DataPribadiController@UpdateDataPribadi');//checked
-// Route::delete('data-pribadi','DataPribadiController@DeleteDataPribadi');
+// Route::delete('data-pribadi/{id}','DataPribadiController@DeleteDataPribadi');
 /* END DATA PRIBADI */
 /* PREFERENSI PEKERJAAN */
 Route::post('preferensi-pekerjaan'			,'PreferensiPekerjaanController@PostPreferensiPekerjaan');//checked
@@ -78,14 +78,14 @@ Route::delete('preferensi-pekerjaan/{id}'	,'PreferensiPekerjaanController@Delete
 
 /* PENGALAMAN */
 Route::post('pengalaman'			,'PengalamanController@PostPengalaman');//checked
-Route::put('edit-pengalaman/{id}'	,'PengalamanController@UpdatePengalaman');//route not found
+Route::put('pengalaman/{id}'	,'PengalamanController@UpdatePengalaman');//route not found
 Route::get('pengalaman/{id}'		,'PengalamanController@GetPengalaman');//checked
 Route::delete('pengalaman/{id}'		,'PengalamanController@DeletePengalaman');
 /* END PENGALAMAN */
 
 /* PENDIDIKAN */
 Route::post('pendidikan'		,'PendidikanController@PostPendidikan');//checked
-Route::get('get-pendidikan/{id}','PendidikanController@GetPendidikan');//checked
+Route::get('pendidikan/{id}','PendidikanController@GetPendidikan');//checked
 Route::put('pendidikan/{id}'	,'PendidikanController@UpdatePendidikan');//checked
 Route::delete('pendidikan/{id}'	,'PendidikanController@DeletePendidikan');
 /* END PENDIDIKAN */

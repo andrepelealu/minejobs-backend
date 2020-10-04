@@ -40,7 +40,7 @@ class DataPribadiController extends Controller
     return response()->json($res, 200);
     }
     public function GetDataPribadiById($id){
-        $data = DataPribadiModel::where('id',$id)->get();
+        $data = DataPribadiModel::where('id_kandidat',$id)->get();
         if(count($data)>0){
             $res['count'] = count($data);
             $res['message'] = 'data ditemukan';
@@ -95,7 +95,7 @@ class DataPribadiController extends Controller
         }
 
     }
-    public function DeleteDataPribadi(){
+    public function DeleteDataPribadi($id){
         $data = DataPribadiModel::find($id,'id_kandidat')->first();
         if(count($data)>0){
             if($data->delete()){
