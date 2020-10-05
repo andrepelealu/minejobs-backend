@@ -65,10 +65,21 @@
     </head>
     <body>
 
+<<<<<<< HEAD
             <div class="content">
                 <div class="title m-b-md">
                     Minejobs API
                 </div>
         </div>
+=======
+          
+
+            <div class="content">
+                <div class="title m-b-md">
+                    MineJobs API
+                </div>
+
+ 
+>>>>>>> 0927e9e32a11ac576da135fb5bb8c3a6570a1f41
     </body>
 </html>
